@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+<title>rangeland test</title>
+<link rel="stylesheet" href="http://js.arcgis.com/3.14/esri/css/esri.css">
+<style>
+html, body, #map {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+#results{
+  bottom: 50px;
+  right: 20px;
+  width: 275px;
+}
+#title{
+  text-align: center;
+}
+#myChart{
+  padding-left: 10px;
+}    
+.mainStyle{
+  position: absolute;
+  z-index: 99;
+  background-color: black;
+  color: cornsilk;
+  border-radius: 8px;
+  padding: 15px;
+  opacity: 0.8;
+}
+.pvt{
+  color: #D6D00A;
+}
+.pub{
+  color: #8A8A8A;
+}
+</style>
+
+<script src="http://js.arcgis.com/3.14/"></script>
+<script>
+var map, landLyr, idahoLyr, pieChart, buffGeom;
+require(["esri/map",
+         "./Chart.js",
+         "esri/graphic",
+         "esri/graphicsUtils",
+         "esri/config",
+         "esri/geometry/Extent",
+         "esri/InfoTemplate",
+         "esri/geometry/geometryEngine",
+         "esri/layers/ArcGISDynamicMapServiceLayer",
+         "esri/tasks/QueryTask",
+         "esri/tasks/query",
+         "esri/tasks/RelationParameters",
+         "esri/symbols/SimpleMarkerSymbol",
+         "esri/tasks/FeatureSet",
+         "esri/SpatialReference",
+         "esri/symbols/SimpleFillSymbol",
+         "esri/symbols/SimpleLineSymbol",
+         "esri/renderers/SimpleRenderer",
+         "esri/layers/ArcGISTiledMapServiceLayer",
+         "esri/toolbars/draw",
+         "esri/Color",
+         "esri/layers/FeatureLayer",
+         "dojo/on",
+         "dojo/_base/array",
+         "dojo/dom",
+         "dojo/domReady!"
+], function(Map, Chart, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, ArcGISDynamicMapServiceLayer, QueryTask, Query, RelationParameters, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
+
+  //Set up map, layers, and properties    
+  var initExtent = new Extent(-13242295.07, 5127625.01, -12141601.86, 5861420.48, new SpatialReference({wkid:3857}));
+  map = new Map("map", {
+    basemap: "topo",
+    extent: initExtent,
+  });
+  map.on("load", function(){
+    map.graphics.enableMouseEvents();
+    map.graphics.on("click", closeHighlight);
+  });
+
+  var tiled = new Tiled("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer");
+   // map.addLayer(tiled);
+
+
+ // var queryLayer = new ArcGISDynamicMapServiceLayer("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/surface_management_agency/MapServer/0");
+  var landUrl = "https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/surface_management_agency/MapServer/0";
+  var statesUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer/3";
+  var idahoCounties = new FeatureLayer("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_county_boundaries/MapServer/0", {
+      mode: FeatureLayer.MODE_SNAPSHOT,
+      outFields: ["Shape"] 
+        });
+  landLyr = new FeatureLayer(landUrl, {
+    opacity: 0.9,
+    definitionExpression: "AGNCY_NAME = 'PRIVATE'"
+  });
+
+  idahoLyr = new FeatureLayer(statesUrl, {
+    definitionExpression: "STATE_NAME = 'Idaho'",
+    opacity: 0
+  });
+
+
+
+
+
+  //create symbol for selected features
+  symbol = new SimpleMarkerSymbol();
+  symbol.setStyle(SimpleMarkerSymbol.STYLE_SQUARE);
+  symbol.setSize(10);
+  symbol.setColor(new Color([255,255,0,0.5]));
+  //Layer symbology    
+  var countySymbol = new SimpleFillSymbol(
+      SimpleFillSymbol.STYLE_SOLID, 
+      new SimpleLineSymbol(
+        SimpleLineSymbol.STYLE_SOLID, 
+        new Color([255,255,255,0.35]), 
+        1
+      ),
+      new Color([125,125,125,0.35])
+    );
+   var landSymbol = new SimpleFillSymbol(
+      SimpleFillSymbol.STYLE_SOLID, 
+      new SimpleLineSymbol(
+        SimpleLineSymbol.STYLE_SOLID, 
+        new Color([255, 255, 255, 0.0]), 
+        1
+      ),
+      new Color([253, 253, 52, 0.0])
+    );
+
+  var buffSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 255, 255, 1]), 3), null);
+  var buffSymFade = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 255, 255, 0.4]), 10), null);
+  var privateSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([253, 32, 235, 0.6901960784313725]));
+  var publicSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_VERTICAL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 255, 255, 0.4]));
+
+
+  idahoCounties.setRenderer(new SimpleRenderer(countySymbol));
+  landLyr.setRenderer(new SimpleRenderer(landSymbol));
+
+  map.addLayers([idahoLyr, idahoCounties]);
+
+  //map event handlers  
+ idahoCounties.on("click", function(evt){
+    //initialize query task
+    var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/surface_management_agency/MapServer/0");
+    var query = new Query();
+    query.outFields = ["AGNCY_NAME"];
+    query.where ="AGNCY_NAME = 'PRIVATE'";
+    var highlightGraphic = new Graphic(evt.graphic.geometry, publicSym);
+    map.graphics.add(highlightGraphic);
+    query.returnGeometry = true;
+    query.geometry = evt.graphic.geometry;
+    queryTask.on('complete', function(){console.log("");});
+    queryTask.on('error', function(error){console.log(error); console.log("error with query.")});  
+    queryTask.execute(query, function(results){showResults(results, evt.graphic.geometry);});
+
+    //initialize query
+   // createBuffer(evt, evt.graphic.geometry);  
+
+  });
+
+ function showResults(results, countyGeom) {
+  buffGeom = countyGeom;
+  var extent = new Extent(countyGeom);
+  var resultFeatures = results.features;
+  var relationParams = new RelationParameters();
+
+  var within = geometryEngine.within(buffGeom, idahoLyr.graphics[0].geometry);
+  var overlaps = geometryEngine.overlaps(buffGeom, idahoLyr.graphics[0].geometry);
+  var graphic;
+  var temp = new Array(resultFeatures.length);
+  //Loop through each feature returned
+  if(!within && overlaps){
+       //If buffer overlaps Idaho, then only get the portion within Idaho  
+      buffGeom = geometryEngine.intersect(buffGeom, idahoLyr.graphics[0].geometry);
+  }
+  if(!within && !overlaps){
+      //If buffer is completely outside Idaho
+      console.log("outside of Idaho!");          
+      return;
+  } 
+  map.graphics.add(new Graphic(buffGeom, buffSymFade));
+  console.log(extent);
+
+  dojo.forEach(resultFeatures,function(entry, i){
+      if (geometryEngine.within(entry.geometry, buffGeom)) {
+        map.graphics.add(entry);
+        entry.setSymbol(privateSym);
+      }
+  });
+
+  for (var i=0, il=resultFeatures.length; i<il; i++){
+      //Get the current feature from the featureSet.
+      //Feature is a graphic
+      graphic = resultFeatures[i];
+      temp[i] = resultFeatures[i].geometry;
+      graphic.setSymbol(privateSym);
+      graphic.setInfoTemplate(InfoTemplate);
+  }
+  graphic.setGeometry(geometryEngine.union(temp));
+  relationParams.geometries1 = graphic.geometry;
+  relationParams.geometries2 = buffGeom;
+  relationParams.relation = RelationParameters.SPATIAL_REL_WITHIN;
+
+    //var privateLand = getPrivateLand(buffGeom, graphic);
+  console.log(graphic);
+  createBuffer(buffGeom, graphic);
+  /*var publicLand = getPublicLand(buffGeom, privateLand.geom);
+
+  console.log(publicLand);
+  generateChart(privateLand, publicLand); */ 
+
+}
+
+function createBuffer(polyGraphic, privateGraphic){
+    if(buffOpt.checked){
+      map.graphics.clear();
+      var centerPt = polyGraphic;
+      //Get buffer of map click point
+      buffGeom = polyGraphic;
+      //check if buffer is completely within Idaho
+      var within = geometryEngine.within(buffGeom, idahoLyr.graphics[0].geometry);
+      //check if buffer overlaps Idaho    
+      var overlaps = geometryEngine.overlaps(buffGeom, idahoLyr.graphics[0].geometry);
+
+      if(!within && overlaps){
+         //If buffer overlaps Idaho, then only get the portion within Idaho  
+         buffGeom = geometryEngine.intersect(buffGeom, idahoLyr.graphics[0].geometry);
+      }
+      if(!within && !overlaps){
+        //If buffer is completely outside Idaho
+        console.log("outside of Idaho!");          
+        return;
+      }
+      map.graphics.add(new Graphic(buffGeom, buffSymFade));
+      var privateLand = getPrivateLand(buffGeom);
+      console.log("here1: ");
+      console.log(privateLand);
+      var publicLand = getPublicLand(buffGeom);
+      generateChart(privateLand, publicLand);   
+    } else if(drawOpt.checked){
+      map.graphics.clear();
+    }
+    else{
+      return;
+    }
+}
+
+function getPrivateLand(geom){
+    console.log("calculating private");
+    var privateLandGraphics = landLyr.graphics;
+    var privateLandGeoms = graphicsUtils.getGeometries(privateLandGraphics);
+    //Only work with private land that intersects the buffer (essentially a select by location)  
+    var priInBuffer = array.filter(privateLandGeoms, function(item, i){
+      if(geometryEngine.intersects(item, geom)){
+        return item;
+      }
+    });
+    console.log("Filtering over");
+    if (priInBuffer.length > 0){
+      //mergqe all the private land features that intersects buffer into one feature
+      var privateUnion = geometryEngine.union(priInBuffer);
+      //get intersection of buffer and merge (cookie cutter)
+      var privateIntersect = geometryEngine.intersect(privateUnion, geom);
+      return {
+        geom: privateIntersect,
+        area: calcArea(privateIntersect)  //get the area of the private land
+      };
+    }
+    else{
+      return {
+        geom: null,
+        area: 0
+      };
+    } 
+  }
+
+function getPublicLand(buffer, privateLand){
+    console.log("calculating public");
+    if(privateLand){
+      //most land that isn't private is public (city, county, state, or federally owned)     
+      var publicLand = geometryEngine.difference(buffer, privateLand);
+      return {
+        geom: publicLand,
+        area: calcArea(publicLand)
+      }  
+    } else {
+      return {
+        geom: buffer,
+        area: calcArea(buffer)
+      }
+    }
+  }
+
+ function ChangeSelection(agency){
+  console.log(agency);
+  if(agency == "Private")
+    agency = "PRIVATE";
+  map.graphics.clear();
+  landLyr = new FeatureLayer(landUrl, {
+    opacity: 0.9,
+    definitionExpression: "AGNCY_NAME = '" + agency + "'"
+  });
+  landLyr.setRenderer(new SimpleRenderer(landSymbol));
+  map.addLayer(landLyr);
+
+  switch(agency){
+    case "BLM":
+      document.getElementById("yllwPie").innerHTML = "BLM: ";
+      break;
+    case "USFS":
+      document.getElementById("yllwPie").innerHTML = "USFS: ";
+      break;
+    case "PRIVATE":
+      document.getElementById("yllwPie").innerHTML = "Private Land: ";
+  }
+}
+  function closeHighlight() {
+    map.graphics.clear();
+  }
+  var drawPolygon = new Draw(map, { showTooltips: true });    
+  
+
+  function calcArea(geom){
+    console.time("math");
+    return (Math.round(geometryEngine.geodesicArea(geom, "square-miles")*100) / 100);
+  }
+    
+  function generateChart(pvtData, pubData){
+    console.log("making chart....");
+    if(pvtData.geom)
+      map.graphics.add(new Graphic(pvtData.geom, privateSym));
+    if(pubData.geom)
+      map.graphics.add(new Graphic(pubData.geom, publicSym));
+    if(!drawOpt.checked)
+      map.graphics.add(new Graphic(buffGeom, buffSym));
+    if(!pieChart){
+      var data = [
+      {
+        label: "Private (sq mi)",
+        value: pvtData.area,
+        color: "#C3BE2E",
+        highlight: "#DDD534"
+      },
+      {
+        label: "Government (sq mi)",
+        value: pubData.area,
+        color: " #9C9C9C",
+        highlight: "#B5B5B5" 
+      }
+    ];
+      
+    var opts = {
+    segmentShowStroke : true,
+    segmentStrokeColor : "#fff",
+    segmentStrokeWidth : 2,
+    percentageInnerCutout : 0,
+    animationSteps : 100,
+    animationEasing : "easeOutBounce",
+    animateRotate : true,
+    animateScale : false 
+    };
+    console.log("options set");
+    var ctx = document.getElementById("myChart").getContext("2d");
+    pieChart = new Chart(ctx).Pie(data, opts);
+    pvtPer.innerHTML = Math.round(10000*pvtData.area / (pubData.area + pvtData.area))/100 + "%";   
+    pubPer.innerHTML = Math.round(10000*pubData.area / (pubData.area + pvtData.area))/100 + "%";    
+    }
+    else{
+      //update private land data
+      pieChart.segments[0].value = pvtData.area;
+      pvtPer.innerHTML = Math.round(10000*pvtData.area / (pubData.area + pvtData.area))/100 + "%";
+      //update public land data
+      pieChart.segments[1].value = pubData.area;
+      pubPer.innerHTML = Math.round(10000*pubData.area / (pubData.area + pvtData.area))/100 + "%";
+      pieChart.update();
+    }
+    console.log("math over");
+  }
+
+  var buffOpt = dom.byId("buffOpt");
+  var drawOpt = dom.byId("drawOpt");
+  var pvtPer = dom.byId("privatePer");
+  var pubPer = dom.byId("publicPer");
+  var baseMapChange = dom.byId("baseMap");
+  var agencyChange = dom.byId("agenceySelection");
+
+  on(baseMapChange, "click", function(evt){
+    map.setBasemap(baseMapChange.value);
+  });
+  on(agencyChange, "click", function(evt){
+    ChangeSelection(agencyChange.value);
+  });
+    
+  on(buffOpt, "click", function(evt){
+    if(buffOpt.checked){
+      map.disableMapNavigation();
+      drawPolygon.deactivate();
+    }
+  });
+    
+  on(drawOpt, "click", function(evt){
+    if(drawOpt.checked){
+      drawPolygon.activate(Draw.POLYGON);
+    }
+  });  
+    
+  on(drawPolygon, "draw-end", function(evt){  
+    drawPolygon.deactivate();
+    drawPolygon.activate(Draw.POLYGON);
+    var geom = evt.geometry;
+    if(geom.rings[0].length <= 3){
+      alert("Polygon must have at least three vertices.");
+      return;
+    }
+      
+    var within = geometryEngine.within(geom, idahoLyr.graphics[0].geometry);
+    //check if buffer overlaps Idaho    
+    var overlaps = geometryEngine.overlaps(geom, idahoLyr.graphics[0].geometry);
+    if(!within && overlaps){
+      //If buffer overlaps Idaho, then only get the portion within Idaho  
+      geom = geometryEngine.intersect(geom, idahoLyr.graphics[0].geometry);
+    }
+    if(!within && !overlaps){
+      //If buffer is completely outside Idaho, then warn the user
+      console.log("outside of Idaho!");          
+      return;
+    }  
+    var privateLand = getPrivateLand(geom);
+    var publicLand = getPublicLand(geom, privateLand.geom);
+    generateChart(privateLand, publicLand);
+  });  
+     
+  var loading = dom.byId("loadingImg");    
+  function showLoading() {
+    esri.show(loading);
+  }
+
+  function hideLoading(error) {
+    esri.hide(loading);
+  }
+  hideLoading();
+//  on(map, "update-end", hideLoading);    
+    
+});
+</script>
+</head>
+
+<body>
+  <div id="map"><img id="loadingImg" src="http://developers.arcgis.com/javascript/samples/map_showloading/images/loading.gif" style="position:absolute; right:49%; top:49%; z-index:100;" />
+    <div class="mainStyle" id="results"><h2 id="title">Idaho Land Ownership</h2>
+    <canvas id="myChart" width="250" height="250"></canvas><br><br>
+    <span id="yllwPie" class="pvt">Private land: <span id="privatePer"></span></span><br>
+    <span class="pub">Public land: <span id="publicPer"></span></span>
+    <br><br>
+    <br><br><input type="radio" name="operation" id="buffOpt" checked>View ownership by county
+    <br><br><input type="radio" name="operation" id="drawOpt">View ownership by polygon   
+    <br><br>
+    <select id="baseMap">
+      <option value="topo">Topo</option>
+      <option value="hybrid">Hybrid</option>
+      <option value="satellite">Satellite</option>
+      <option value="terrain">Terrain</option>
+    </select>
+    <br><br>
+    <select id="agenceySelection">
+      <option value="Private">Private Land</option>
+      <option value="BLM">Bureau of Land Management</option>
+      <option value="USFS">U.S. Forest Service</option>
+    </select>
+  </div>
+</div>
+</body>
+</html>
