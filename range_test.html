@@ -207,8 +207,8 @@ require(["esri/map",
   relationParams.relation = RelationParameters.SPATIAL_REL_WITHIN;
 
     //var privateLand = getPrivateLand(buffGeom, graphic);
-  console.log(graphic);
-  createBuffer(buffGeom, graphic);
+  map.graphics.add(graphic);
+  //createBuffer(buffGeom, graphic);
   /*var publicLand = getPublicLand(buffGeom, privateLand.geom);
 
   console.log(publicLand);
@@ -238,8 +238,6 @@ function createBuffer(polyGraphic, privateGraphic){
       }
       map.graphics.add(new Graphic(buffGeom, buffSymFade));
       var privateLand = getPrivateLand(buffGeom);
-      console.log("here1: ");
-      console.log(privateLand);
       var publicLand = getPublicLand(buffGeom);
       generateChart(privateLand, publicLand);   
     } else if(drawOpt.checked){
@@ -251,7 +249,6 @@ function createBuffer(polyGraphic, privateGraphic){
 }
 
 function getPrivateLand(geom){
-    console.log("calculating private");
     var privateLandGraphics = landLyr.graphics;
     var privateLandGeoms = graphicsUtils.getGeometries(privateLandGraphics);
     //Only work with private land that intersects the buffer (essentially a select by location)  
@@ -260,7 +257,6 @@ function getPrivateLand(geom){
         return item;
       }
     });
-    console.log("Filtering over");
     if (priInBuffer.length > 0){
       //mergqe all the private land features that intersects buffer into one feature
       var privateUnion = geometryEngine.union(priInBuffer);
