@@ -202,9 +202,9 @@ require(["esri/map",
       graphic.setInfoTemplate(InfoTemplate);
   }
   graphic.setGeometry(geometryEngine.union(temp));
-  relationParams.geometries1 = graphic.geometry;
-  relationParams.geometries2 = buffGeom;
-  relationParams.relation = RelationParameters.SPATIAL_REL_WITHIN;
+  graphic2 = new Graphic(graphic, privateSym);
+  graphic2.setGeometry(graphic.geometry);
+  graphic.setGeometry(geometryEngine.intersect(graphic2.geometry, buffGeom));
 
     //var privateLand = getPrivateLand(buffGeom, graphic);
   map.graphics.add(graphic);
@@ -448,6 +448,7 @@ function getPublicLand(buffer, privateLand){
 
 <body>
   <div id="map"><img id="loadingImg" src="http://developers.arcgis.com/javascript/samples/map_showloading/images/loading.gif" style="position:absolute; right:49%; top:49%; z-index:100;" />
+
     <div class="mainStyle" id="results"><h2 id="title">Idaho Land Ownership</h2>
     <canvas id="myChart" width="250" height="250"></canvas><br><br>
     <span id="yllwPie" class="pvt">Private land: <span id="privatePer"></span></span><br>
