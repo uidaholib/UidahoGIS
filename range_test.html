@@ -206,9 +206,8 @@ require(["esri/map",
   graphic2.setGeometry(graphic.geometry);
   graphic.setGeometry(geometryEngine.intersect(graphic2.geometry, buffGeom));
 
-    //var privateLand = getPrivateLand(buffGeom, graphic);
   map.graphics.add(graphic);
-  //createBuffer(buffGeom, graphic);
+  createBuffer(buffGeom, graphic);
   /*var publicLand = getPublicLand(buffGeom, privateLand.geom);
 
   console.log(publicLand);
@@ -218,15 +217,12 @@ require(["esri/map",
 
 function createBuffer(polyGraphic, privateGraphic){
     if(buffOpt.checked){
-      map.graphics.clear();
-      var centerPt = polyGraphic;
-      //Get buffer of map click point
       buffGeom = polyGraphic;
       //check if buffer is completely within Idaho
       var within = geometryEngine.within(buffGeom, idahoLyr.graphics[0].geometry);
       //check if buffer overlaps Idaho    
       var overlaps = geometryEngine.overlaps(buffGeom, idahoLyr.graphics[0].geometry);
-
+      
       if(!within && overlaps){
          //If buffer overlaps Idaho, then only get the portion within Idaho  
          buffGeom = geometryEngine.intersect(buffGeom, idahoLyr.graphics[0].geometry);
@@ -236,9 +232,12 @@ function createBuffer(polyGraphic, privateGraphic){
         console.log("outside of Idaho!");          
         return;
       }
-      map.graphics.add(new Graphic(buffGeom, buffSymFade));
-      var privateLand = getPrivateLand(buffGeom);
+      //map.graphics.add(new Graphic(buffGeom, buffSymFade));
+      var privateLand = getPrivateLand(buffGeom, privateGraphic);
       var publicLand = getPublicLand(buffGeom);
+      console.log("here: ");
+      console.log(privateLand);
+      console.log(publicLand);
       generateChart(privateLand, publicLand);   
     } else if(drawOpt.checked){
       map.graphics.clear();
@@ -248,16 +247,14 @@ function createBuffer(polyGraphic, privateGraphic){
     }
 }
 
-function getPrivateLand(geom){
-    var privateLandGraphics = landLyr.graphics;
-    var privateLandGeoms = graphicsUtils.getGeometries(privateLandGraphics);
+function getPrivateLand(geom, privGraphic){
+    var privateLandGraphics = privGraphic;
+    var privateLandGeoms = privGraphic.geometry;
     //Only work with private land that intersects the buffer (essentially a select by location)  
-    var priInBuffer = array.filter(privateLandGeoms, function(item, i){
-      if(geometryEngine.intersects(item, geom)){
-        return item;
-      }
-    });
-    if (priInBuffer.length > 0){
+    var priInBuffer = privGraphic.geometry;
+    console.log("here2: ");
+    console.log(priInBuffer.rings.length);
+    if (priInBuffer.rings.length > 0){
       //mergqe all the private land features that intersects buffer into one feature
       var privateUnion = geometryEngine.union(priInBuffer);
       //get intersection of buffer and merge (cookie cutter)
