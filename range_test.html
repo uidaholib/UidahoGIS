@@ -252,8 +252,6 @@ function getPrivateLand(geom, privGraphic){
     var privateLandGeoms = privGraphic.geometry;
     //Only work with private land that intersects the buffer (essentially a select by location)  
     var priInBuffer = privGraphic.geometry;
-    console.log("here2: ");
-    console.log(priInBuffer.rings.length);
     if (priInBuffer.rings.length > 0){
       //mergqe all the private land features that intersects buffer into one feature
       var privateUnion = geometryEngine.union(priInBuffer);
@@ -319,29 +317,25 @@ function getPublicLand(buffer, privateLand){
   
 
   function calcArea(geom){
-    console.time("math");
     return (Math.round(geometryEngine.geodesicArea(geom, "square-miles")*100) / 100);
   }
     
   function generateChart(pvtData, pubData){
-    console.log("making chart....");
-    if(pvtData.geom)
-      map.graphics.add(new Graphic(pvtData.geom, privateSym));
-    if(pubData.geom)
-      map.graphics.add(new Graphic(pubData.geom, publicSym));
+    privatePercent = Math.round((pvtData.area / pubData.area) * 100);
+    publicPercent = 100 - privatePercent;
     if(!drawOpt.checked)
       map.graphics.add(new Graphic(buffGeom, buffSym));
     if(!pieChart){
       var data = [
       {
         label: "Private (sq mi)",
-        value: pvtData.area,
+        value: privatePercent,
         color: "#C3BE2E",
         highlight: "#DDD534"
       },
       {
         label: "Government (sq mi)",
-        value: pubData.area,
+        value: publicPercent,
         color: " #9C9C9C",
         highlight: "#B5B5B5" 
       }
@@ -360,19 +354,18 @@ function getPublicLand(buffer, privateLand){
     console.log("options set");
     var ctx = document.getElementById("myChart").getContext("2d");
     pieChart = new Chart(ctx).Pie(data, opts);
-    pvtPer.innerHTML = Math.round(10000*pvtData.area / (pubData.area + pvtData.area))/100 + "%";   
-    pubPer.innerHTML = Math.round(10000*pubData.area / (pubData.area + pvtData.area))/100 + "%";    
+    pvtPer.innerHTML = privatePercent + "%";   
+    pubPer.innerHTML = publicPercent + "%";    
     }
     else{
       //update private land data
-      pieChart.segments[0].value = pvtData.area;
-      pvtPer.innerHTML = Math.round(10000*pvtData.area / (pubData.area + pvtData.area))/100 + "%";
+      pieChart.segments[0].value = privatePercent;
+      pvtPer.innerHTML = privatePercent + "%";
       //update public land data
-      pieChart.segments[1].value = pubData.area;
-      pubPer.innerHTML = Math.round(10000*pubData.area / (pubData.area + pvtData.area))/100 + "%";
+      pieChart.segments[1].value = publicPercent;
+      pubPer.innerHTML = publicPercent + "%";
       pieChart.update();
     }
-    console.log("math over");
   }
 
   var buffOpt = dom.byId("buffOpt");
