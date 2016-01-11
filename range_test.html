@@ -146,6 +146,7 @@ require(["esri/map",
   //map event handlers  
  idahoCounties.on("click", function(evt){
     //initialize query task
+    map.graphics.clear();
     var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/surface_management_agency/MapServer/0");
     var query = new Query();
     query.outFields = ["AGNCY_NAME"];
