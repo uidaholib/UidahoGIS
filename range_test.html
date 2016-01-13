@@ -250,7 +250,6 @@ function createBuffer(polyGraphic, privateGraphic){
 
 function getPrivateLand(geom, privGraphic){
     var privateLandGraphics = privGraphic;
-    var privateLandGeoms = privGraphic.geometry;
     //Only work with private land that intersects the buffer (essentially a select by location)  
     var priInBuffer = privGraphic.geometry;
     if (priInBuffer.rings.length > 0){
@@ -374,14 +373,11 @@ function getPublicLand(buffer, privateLand){
   var pvtPer = dom.byId("privatePer");
   var pubPer = dom.byId("publicPer");
   var baseMapChange = dom.byId("baseMap");
-  var agencyChange = dom.byId("agenceySelection");
 
   on(baseMapChange, "click", function(evt){
     map.setBasemap(baseMapChange.value);
   });
-  on(agencyChange, "click", function(evt){
-    ChangeSelection(agencyChange.value);
-  });
+
     
   on(buffOpt, "click", function(evt){
     if(buffOpt.checked){
@@ -454,12 +450,14 @@ function getPublicLand(buffer, privateLand){
       <option value="satellite">Satellite</option>
       <option value="terrain">Terrain</option>
     </select>
+
     <br><br>
-    <select id="agenceySelection">
-      <option value="Private">Private Land</option>
-      <option value="BLM">Bureau of Land Management</option>
-      <option value="USFS">U.S. Forest Service</option>
-    </select>
+    <p>Agencies to display</p>
+    <form>
+      <input type="checkbox" name="Private" value="PRIVATE">Private<br>
+      <input type="checkbox" name="BLM" value="BLM">Bureau of Land Management<br>
+      <input type="checkbox" name="USFS" value="USFS">U.S. Forest Service
+    </form>
   </div>
 </div>
 </body>
