@@ -186,12 +186,6 @@ require(["esri/map",
   map.graphics.add(new Graphic(buffGeom, buffSymFade));
   console.log(extent);
 
-  dojo.forEach(resultFeatures,function(entry, i){
-      if (geometryEngine.within(entry.geometry, buffGeom)) {
-        map.graphics.add(entry);
-        entry.setSymbol(privateSym);
-      }
-  });
 
   for (var i=0, il=resultFeatures.length; i<il; i++){
       //Get the current feature from the featureSet.
