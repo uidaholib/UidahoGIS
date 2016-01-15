@@ -86,8 +86,7 @@ require(["esri/map",
    // map.addLayer(tiled);
 
 
- // var queryLayer = new ArcGISDynamicMapServiceLayer("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/surface_management_agency/MapServer/0");
-  var landUrl = "https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/surface_management_agency/MapServer/0";
+  var landUrl = "https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0";
   var statesUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer/3";
   var idahoCounties = new FeatureLayer("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_county_boundaries/MapServer/0", {
       mode: FeatureLayer.MODE_SNAPSHOT,
@@ -134,7 +133,7 @@ require(["esri/map",
 
   var buffSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 255, 255, 1]), 3), null);
   var buffSymFade = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 255, 255, 0.4]), 10), null);
-  var privateSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([253, 32, 235, 0.6901960784313725]));
+  var privateSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([253, 32, 235, 0.69]));
   var publicSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_VERTICAL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 255, 255, 0.4]));
 
 
@@ -147,7 +146,7 @@ require(["esri/map",
  idahoCounties.on("click", function(evt){
     //initialize query task
     map.graphics.clear();
-    var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/surface_management_agency/MapServer/0");
+    var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
     var query = new Query();
     query.outFields = ["AGNCY_NAME"];
     query.where ="AGNCY_NAME = 'PRIVATE'";
