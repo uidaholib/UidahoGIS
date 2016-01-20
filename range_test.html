@@ -217,10 +217,10 @@ function createBuffer(polyGraphic, privateGraphic){
       //check if buffer overlaps Idaho    
       var overlaps = geometryEngine.overlaps(buffGeom, idahoLyr.graphics[0].geometry);
       
-      if(!within && overlaps){
+/*      if(!within && overlaps){
          //If buffer overlaps Idaho, then only get the portion within Idaho  
          buffGeom = geometryEngine.intersect(buffGeom, idahoLyr.graphics[0].geometry);
-      }
+      }*/
       if(!within && !overlaps){
         //If buffer is completely outside Idaho
         console.log("outside of Idaho!");          
