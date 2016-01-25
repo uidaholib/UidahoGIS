@@ -54,7 +54,8 @@ require(["esri/map",
          "esri/layers/ArcGISDynamicMapServiceLayer",
          "esri/tasks/QueryTask",
          "esri/tasks/query",
-         "esri/layers/RasterLayer",
+         "esri/layers/ArcGISImageServiceLayer",
+         "esri/layers/RasterFunction",
          "esri/tasks/RelationParameters",
          "esri/symbols/SimpleMarkerSymbol",
          "esri/tasks/FeatureSet",
@@ -70,7 +71,7 @@ require(["esri/map",
          "dojo/_base/array",
          "dojo/dom",
          "dojo/domReady!"
-], function(Map, Chart, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, ArcGISDynamicMapServiceLayer, QueryTask, Query, RasterLayer, RelationParameters, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
+], function(Map, Chart, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, ArcGISDynamicMapServiceLayer, QueryTask, Query, ArcGISImageServiceLayer,  RasterFunction, RelationParameters, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
 
   //Set up map, layers, and properties    
   var initExtent = new Extent(-13242295.07, 5127625.01, -12141601.86, 5861420.48, new SpatialReference({wkid:3857}));
@@ -113,11 +114,10 @@ require(["esri/map",
     opacity: 0
   });
 
-  rasterLyr = new RasterLayer(rasterServer, {
-    opacity: 0,
-    pixelFilter: colorize
+  rasterFnc = new RasterFunction();
+  filterFnc = new RasterFunction();
+  rasterImgServiceLyr = new ArcGISImageServiceLayer(rasterServer, {
   });
-
 
   //create symbol for selected features
   symbol = new SimpleMarkerSymbol();
@@ -162,6 +162,7 @@ require(["esri/map",
  idahoCounties.on("click", function(evt){
     //initialize query task
     map.graphics.clear();
+    map.removeLayer(rasterImgServiceLyr);
     var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
     var query = new Query();
     query.outFields = ["AGNCY_NAME"];
@@ -173,7 +174,22 @@ require(["esri/map",
     queryTask.on('complete', function(){console.log("");});
     queryTask.on('error', function(error){console.log(error); console.log("error with query.")});  
     queryTask.execute(query, function(results){showResults(results, evt.graphic.geometry);});
-
+    rasterFnc.functionName = "Clip";
+    rasterFnc.variableName = "clipper";
+    rasterFnc.functionArguments = {
+      "ClippingGeometry" : evt.graphic.geometry,
+      "ClippingType" : 1,
+    };
+    filterFnc.functionName = "Colormap";
+    filterFnc.functionArguments = {
+      "Colormap": [
+                  [52, 0, 255, 0],
+                  [71, 0, 255, 0]
+                ],
+      "Raster": rasterFnc
+    };
+    rasterImgServiceLyr.setRenderingRule(filterFnc);
+    map.addLayer(rasterImgServiceLyr);
     //initialize query
    // createBuffer(evt, evt.graphic.geometry);  
 
@@ -251,9 +267,6 @@ function createBuffer(polyGraphic, privateGraphic){
       //map.graphics.add(new Graphic(buffGeom, buffSymFade));
       var privateLand = getPrivateLand(buffGeom, privateGraphic);
       var publicLand = getPublicLand(buffGeom);
-      console.log("here: ");
-      console.log(privateLand);
-      console.log(publicLand);
       generateChart(privateLand, publicLand);   
     } else if(drawOpt.checked){
       map.graphics.clear();
@@ -300,67 +313,6 @@ function getPublicLand(buffer, privateLand){
         area: calcArea(buffer)
       }
     }
-  }
-
-  // NOTE: taken from: https://developers.arcgis.com/javascript/beta/api-reference/esri-layers-ArcGISImageLayer.html#pixelFilter
-  function colorize(pixelData){
-    console.log(pixelData);
-    //If there isn't pixelData, a pixelBlock, nor pixels, exit the function
-    if (pixelData === null || pixelData.pixelBlock === null || pixelData.pixelBlock.pixels === null) return;
-
-    //The pixelBlock stores the values of all pixels visible in the view    
-    var pixelBlock = pixelData.pixelBlock;
-
-    //Get the min and max values of the data in the current view    
-    var minValue = pixelBlock.statistics[0].minValue;
-    var maxValue = pixelBlock.statistics[0].maxValue;
-
-    //The mask is an array that determines which pixels are visible to the client        
-    var mask = pixelBlock.mask;
-
-    //The pixels visible in the view    
-    var pixels = pixelBlock.pixels;
-    //The number of pixels in the pixelBlock    
-    var numPixels = pixelBlock.width * pixelBlock.height;
-
-    //Calculate the factor by which to determine the red and blue 
-    //values in the colorized version of the layer
-    var factor = 255.0 / (maxValue - minValue); 
-
-    //Get the pixels containing temperature values in the only band of the data    
-    var band1 = pixels[0];
-
-    //Create empty arrays for each of the RGB bands to set on the pixelBlock    
-    var rBand = [];
-    var gBand = [];
-    var bBand = [];
-
-    //Loop through all the pixels in the view    
-    for (i = 0; i < numPixels; i++) {
-      //Get the pixel value recorded at the pixel location   
-      var tempValue = band1[i];
-      //Calculate the red value based on the factor   
-      var red = (tempValue - minValue) * factor;
-
-      //Sets a color between blue (lowest) and red (highest) in each band
-      rBand[i] = 0;
-      gBand[i] = 0;
-      bBand[i] = 0;
-      if(band1[i] == 52 || band1[i] == 72){
-        rBand[i] = 0;
-        gBand[i] = 255;
-      }
-
-      
-    }
-
-    //Set the new pixel values on the pixelBlock (now three bands)   
-    pixelData.pixelBlock.pixels = [rBand, gBand, bBand];
-    pixelData.pixelBlock.pixelType = "U8"; //U8 is used for color
-
-    //returns the data to the layer
-    return pixelData;
-
   }
 
  function ChangeSelection(agency){
