@@ -188,7 +188,7 @@ require(["esri/map",
   function AgencyQuery(evt){
     var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
     var query = new Query();
-    var selectedAgencies = [];
+    var selectedAgencies = 
 
     query.outFields = ["AGNCY_NAME"];
     query.where ="AGNCY_NAME = '" + agency + "'"; 
