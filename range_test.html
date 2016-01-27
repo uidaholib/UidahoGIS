@@ -53,6 +53,7 @@ require(["esri/map",
          "esri/InfoTemplate",
          "esri/geometry/geometryEngine",
          "esri/layers/ArcGISDynamicMapServiceLayer",
+         "esri/dijit/editing/Union",
          "esri/tasks/QueryTask",
          "esri/tasks/query",
          "esri/layers/ArcGISImageServiceLayer",
@@ -72,7 +73,7 @@ require(["esri/map",
          "dojo/_base/array",
          "dojo/dom",
          "dojo/domReady!"
-], function(Map, Chart, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, ArcGISDynamicMapServiceLayer, QueryTask, Query, ArcGISImageServiceLayer,  RasterFunction, RelationParameters, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
+], function(Map, Chart, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, ArcGISDynamicMapServiceLayer, Union, QueryTask, Query, ArcGISImageServiceLayer,  RasterFunction, RelationParameters, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
   src="jquery-1.12.0.min.js"
 
   //Set up map, layers, and properties    
@@ -163,11 +164,13 @@ require(["esri/map",
   //map event handlers  
  idahoCounties.on("click", function(evt){
     //initialize query task
+    var selectedAgencies = GetSelected();
     map.graphics.clear();
     map.removeLayer(rasterImgServiceLyr);
     var highlightGraphic = new Graphic(evt.graphic.geometry, publicSym);
     map.graphics.add(highlightGraphic);
-    AgencyQuery(evt);
+    GetLayers(selectedAgencies, evt);
+
     rasterFnc.functionName = "Clip";
     rasterFnc.variableName = "clipper";
     rasterFnc.functionArguments = {
@@ -185,18 +188,19 @@ require(["esri/map",
     rasterImgServiceLyr.setRenderingRule(filterFnc);
     map.addLayer(rasterImgServiceLyr);
   });
-  function AgencyQuery(evt){
+  function GetLayers(selectedLayers, evt){
     var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
     var query = new Query();
-    var selectedAgencies = 
-
-    query.outFields = ["AGNCY_NAME"];
-    query.where ="AGNCY_NAME = '" + agency + "'"; 
-    query.returnGeometry = true;
-    query.geometry = evt.graphic.geometry;
-    queryTask.on('complete', function(){console.log("");});
-    queryTask.on('error', function(error){console.log(error); console.log("error with query.")});  
-    queryTask.execute(query, function(results){showResults(results, evt.graphic.geometry);});
+    for(i = 0; i < selectedLayers.length; i++){
+      query.outFields = ["AGNCY_NAME"];
+      query.where ="AGNCY_NAME = '" + selectedLayers[i] + "'"; 
+      query.returnGeometry = true;
+      query.geometry = evt.graphic.geometry;
+      queryTask.on('complete', function(){console.log("");});
+      queryTask.on('error', function(error){console.log(error); console.log("error with query.")});  
+      queryTask.execute(query, function(result){ showResults(result, evt.graphic.geometry);
+      });
+    }
   }
 
  function showResults(results, countyGeom) {
@@ -410,16 +414,18 @@ function getPublicLand(buffer, privateLand){
     map.setBasemap(baseMapChange.value);
   });
 
-  on(checkedAgencies, "click", function(evt){
+  function GetSelected(){
       var checkboxes = document.getElementById('selectAgency');
       var selected = [];
       for (var i=0; i<checkboxes.length; i++) {
       if (checkboxes[i].checked) {
         console.log(checkboxes[i].value);
-        ChangeSelection(checkboxes[i].value);
+        selected[i] = checkboxes[i].value;
+        console.log(selected[i]);
       }
       }
-  });
+    return selected;
+  }
   on(buffOpt, "click", function(evt){
     if(buffOpt.checked){
       map.disableMapNavigation();
