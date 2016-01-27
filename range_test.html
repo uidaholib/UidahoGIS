@@ -41,6 +41,7 @@ html, body, #map {
 </style>
 
 <script src="http://js.arcgis.com/3.14/"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script>
 var map, landLyr, idahoLyr, pieChart, buffGeom;
 require(["esri/map",
@@ -72,6 +73,7 @@ require(["esri/map",
          "dojo/dom",
          "dojo/domReady!"
 ], function(Map, Chart, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, ArcGISDynamicMapServiceLayer, QueryTask, Query, ArcGISImageServiceLayer,  RasterFunction, RelationParameters, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
+  src="jquery-1.12.0.min.js"
 
   //Set up map, layers, and properties    
   var initExtent = new Extent(-13242295.07, 5127625.01, -12141601.86, 5861420.48, new SpatialReference({wkid:3857}));
@@ -163,17 +165,9 @@ require(["esri/map",
     //initialize query task
     map.graphics.clear();
     map.removeLayer(rasterImgServiceLyr);
-    var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
-    var query = new Query();
-    query.outFields = ["AGNCY_NAME"];
-    query.where ="AGNCY_NAME = 'PRIVATE'";
     var highlightGraphic = new Graphic(evt.graphic.geometry, publicSym);
     map.graphics.add(highlightGraphic);
-    query.returnGeometry = true;
-    query.geometry = evt.graphic.geometry;
-    queryTask.on('complete', function(){console.log("");});
-    queryTask.on('error', function(error){console.log(error); console.log("error with query.")});  
-    queryTask.execute(query, function(results){showResults(results, evt.graphic.geometry);});
+    AgencyQuery(evt);
     rasterFnc.functionName = "Clip";
     rasterFnc.variableName = "clipper";
     rasterFnc.functionArguments = {
@@ -190,10 +184,20 @@ require(["esri/map",
     };
     rasterImgServiceLyr.setRenderingRule(filterFnc);
     map.addLayer(rasterImgServiceLyr);
-    //initialize query
-   // createBuffer(evt, evt.graphic.geometry);  
-
   });
+  function AgencyQuery(evt){
+    var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
+    var query = new Query();
+    var selectedAgencies = [];
+
+    query.outFields = ["AGNCY_NAME"];
+    query.where ="AGNCY_NAME = '" + agency + "'"; 
+    query.returnGeometry = true;
+    query.geometry = evt.graphic.geometry;
+    queryTask.on('complete', function(){console.log("");});
+    queryTask.on('error', function(error){console.log(error); console.log("error with query.")});  
+    queryTask.execute(query, function(results){showResults(results, evt.graphic.geometry);});
+  }
 
  function showResults(results, countyGeom) {
   buffGeom = countyGeom;
@@ -317,9 +321,8 @@ function getPublicLand(buffer, privateLand){
 
  function ChangeSelection(agency){
   console.log(agency);
-  if(agency == "Private")
-    agency = "PRIVATE";
   map.graphics.clear();
+
   landLyr = new FeatureLayer(landUrl, {
     opacity: 0.9,
     definitionExpression: "AGNCY_NAME = '" + agency + "'"
@@ -401,12 +404,22 @@ function getPublicLand(buffer, privateLand){
   var pvtPer = dom.byId("privatePer");
   var pubPer = dom.byId("publicPer");
   var baseMapChange = dom.byId("baseMap");
+  var checkedAgencies = dom.byId("selectAgency");
 
   on(baseMapChange, "click", function(evt){
     map.setBasemap(baseMapChange.value);
   });
 
-    
+  on(checkedAgencies, "click", function(evt){
+      var checkboxes = document.getElementById('selectAgency');
+      var selected = [];
+      for (var i=0; i<checkboxes.length; i++) {
+      if (checkboxes[i].checked) {
+        console.log(checkboxes[i].value);
+        ChangeSelection(checkboxes[i].value);
+      }
+      }
+  });
   on(buffOpt, "click", function(evt){
     if(buffOpt.checked){
       map.disableMapNavigation();
@@ -481,7 +494,7 @@ function getPublicLand(buffer, privateLand){
 
     <br><br>
     <p>Agencies to display</p>
-    <form>
+    <form id="selectAgency">
       <input type="checkbox" name="Private" value="PRIVATE">Private<br>
       <input type="checkbox" name="BLM" value="BLM">Bureau of Land Management<br>
       <input type="checkbox" name="USFS" value="USFS">U.S. Forest Service
