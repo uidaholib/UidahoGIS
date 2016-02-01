@@ -214,8 +214,6 @@ require(["esri/map",
   }
 
  function showResults(results, countyGeom) {
-  console.log("acutally success!");
-  console.log(results);
   buffGeom = countyGeom;
   var extent = new Extent(countyGeom);
   var resultFeatures = results.features;
@@ -236,7 +234,6 @@ require(["esri/map",
       return;
   } 
   map.graphics.add(new Graphic(buffGeom, buffSymFade));
-  console.log(extent);
 
   dojo.forEach(resultFeatures,function(entry, i){
       if (geometryEngine.within(entry.geometry, buffGeom)) {
@@ -260,11 +257,6 @@ require(["esri/map",
 
   map.graphics.add(graphic);
   createBuffer(buffGeom, graphic);
-
-  /*var publicLand = getPublicLand(buffGeom, privateLand.geom);
-
-  console.log(publicLand);
-  generateChart(privateLand, publicLand); */ 
 
 }
 
@@ -320,7 +312,7 @@ function getPrivateLand(geom, privGraphic){
   }
 
 function getPublicLand(buffer, privateLand){
-    console.log("calculating public");
+
     if(privateLand){
       //most land that isn't private is public (city, county, state, or federally owned)     
       var publicLand = geometryEngine.difference(buffer, privateLand);
@@ -337,7 +329,7 @@ function getPublicLand(buffer, privateLand){
   }
 
  function ChangeSelection(agency){
-  console.log(agency);
+
   map.graphics.clear();
 
   landLyr = new FeatureLayer(landUrl, {
@@ -411,9 +403,7 @@ function getPublicLand(buffer, privateLand){
       var selected = [];
       for (var i=0; i<checkboxes.length; i++) {
       if (checkboxes[i].checked) {
-        console.log(checkboxes[i].value);
         selected[i] = checkboxes[i].value;
-        console.log(selected[i]);
       }
       }
     return selected;
