@@ -109,7 +109,6 @@ require(["esri/map",
         });
   landLyr = new FeatureLayer(landUrl, {
     opacity: 0.9,
-    definitionExpression: "AGNCY_NAME = 'PRIVATE'"
   });
 
   idahoLyr = new FeatureLayer(statesUrl, {
@@ -193,20 +192,31 @@ require(["esri/map",
   function GetLayers(selectedLayers, evt){
     var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
     var query = new Query();
+    var queryString = "AGNCY_NAME = '";
 
-    for(i = 0; i < selectedLayers.length; i++){
-      query.outFields = ["AGNCY_NAME"];
-      query.where ="AGNCY_NAME = '" + selectedLayers[i] + "'"; 
-      query.returnGeometry = true;
-      query.geometry = evt.graphic.geometry;
-      queryTask.on('complete', function(){console.log("");});
-      queryTask.on('error', function(error){console.log(error); console.log("error with query.");});  
-      queryTask.execute(query, function(result){ showResults(result, evt.graphic.geometry);
-      });
+    query.outFields = ["AGNCY_NAME"];
+
+    for(i=0; i < selectedLayers.length; i++){
+      if(i != selectedLayers.length - 1)
+        queryString += selectedLayers[i] + "' OR AGNCY_NAME = '";
+      else
+        queryString += selectedLayers[i] + "'";
     }
+   
+    query.where = queryString;
+
+    query.returnGeometry = true;
+    query.geometry = evt.graphic.geometry;
+    queryTask.on('complete', function(){console.log("");});
+    queryTask.on('error', function(error){console.log(error); console.log("error with query.");});  
+    queryTask.execute(query, function(result){ showResults(result, evt.graphic.geometry);
+    });
+    
   }
 
  function showResults(results, countyGeom) {
+  console.log("acutally success!");
+  console.log(results);
   buffGeom = countyGeom;
   var extent = new Extent(countyGeom);
   var resultFeatures = results.features;
@@ -345,7 +355,7 @@ function getPublicLand(buffer, privateLand){
       document.getElementById("yllwPie").innerHTML = "USFS: ";
       break;
     case "PRIVATE":
-      document.getElementById("yllwPie").innerHTML = "Private Land: ";
+      document.getElementById("yllwPie").innerHTML = "Selected Land: ";
   }
 }
   function closeHighlight() {
@@ -467,8 +477,8 @@ function getPublicLand(buffer, privateLand){
 
     <div class="mainStyle" id="results"><h2 id="title">Idaho Land Ownership</h2>
     <br>
-    <span id="yllwPie" class="pvt">Private land: <span id="privatePer"></span></span><br>
-    <span class="pub">Public land: <span id="publicPer"></span></span>
+    <span id="yllwPie" class="pvt">Selected Land: <span id="privatePer"></span></span><br>
+    <span class="pub">All Other Land: <span id="publicPer"></span></span>
     <br><br>
     <br><br><input type="radio" name="operation" id="buffOpt" checked>View ownership by county
     <br><br><input type="radio" name="operation" id="drawOpt">View ownership by polygon   
