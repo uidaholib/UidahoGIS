@@ -168,26 +168,9 @@ require(["esri/map",
     map.removeLayer(rasterImgServiceLyr);
     var highlightGraphic = new Graphic(evt.graphic.geometry, publicSym);
     map.graphics.add(highlightGraphic);
-    showLoading();
+
     GetLayers(selectedAgencies, evt);
 
-    rasterFnc.functionName = "Clip";
-    rasterFnc.variableName = "clipper";
-    rasterFnc.functionArguments = {
-      "ClippingGeometry" : evt.graphic.geometry,
-      "ClippingType" : 1,
-    };
-    filterFnc.functionName = "Colormap";
-    filterFnc.functionArguments = {
-      "Colormap": [
-                  [52, 0, 255, 0],
-                  [71, 0, 255, 0]
-                ],
-      "Raster": rasterFnc
-    };
-    hideLoading();
-    rasterImgServiceLyr.setRenderingRule(filterFnc);
-    map.addLayer(rasterImgServiceLyr);
   });
   function GetLayers(selectedLayers, evt){
     var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
@@ -209,9 +192,25 @@ require(["esri/map",
     query.geometry = evt.graphic.geometry;
     queryTask.on('complete', function(){console.log("");});
     queryTask.on('error', function(error){console.log(error); console.log("error with query.");});  
-    queryTask.execute(query, function(result){ showResults(result, evt.graphic.geometry);
+    queryTask.execute(query, function(result){ 
+      showResults(result, evt.graphic.geometry);
+      rasterFnc.functionName = "Clip";
+      rasterFnc.variableName = "clipper";
+      rasterFnc.functionArguments = {
+        "ClippingGeometry" : evt.graphic.geometry,
+        "ClippingType" : 1,
+      };
+      filterFnc.functionName = "Colormap";
+      filterFnc.functionArguments = {
+        "Colormap": [
+                    [52, 0, 255, 0],
+                    [71, 0, 255, 0]
+                  ],
+        "Raster": rasterFnc
+      };
+      rasterImgServiceLyr.setRenderingRule(filterFnc);
+      map.addLayer(rasterImgServiceLyr);
     });
-    
   }
 
  function showResults(results, countyGeom) {
@@ -261,6 +260,7 @@ require(["esri/map",
 
   map.graphics.add(graphic);
   createBuffer(buffGeom, graphic);
+
   /*var publicLand = getPublicLand(buffGeom, privateLand.geom);
 
   console.log(publicLand);
