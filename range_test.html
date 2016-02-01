@@ -43,7 +43,7 @@ html, body, #map {
 <script src="http://js.arcgis.com/3.14/"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script>
-var map, landLyr, idahoLyr, pieChart, buffGeom;
+var map, landLyr, idahoLyr, pieChart, buffGeom, loading;
 require(["esri/map",
          "./Chart.js",
          "esri/graphic",
@@ -169,6 +169,7 @@ require(["esri/map",
     map.removeLayer(rasterImgServiceLyr);
     var highlightGraphic = new Graphic(evt.graphic.geometry, publicSym);
     map.graphics.add(highlightGraphic);
+    showLoading();
     GetLayers(selectedAgencies, evt);
 
     rasterFnc.functionName = "Clip";
@@ -185,19 +186,21 @@ require(["esri/map",
                 ],
       "Raster": rasterFnc
     };
+    hideLoading();
     rasterImgServiceLyr.setRenderingRule(filterFnc);
     map.addLayer(rasterImgServiceLyr);
   });
   function GetLayers(selectedLayers, evt){
     var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
     var query = new Query();
+
     for(i = 0; i < selectedLayers.length; i++){
       query.outFields = ["AGNCY_NAME"];
       query.where ="AGNCY_NAME = '" + selectedLayers[i] + "'"; 
       query.returnGeometry = true;
       query.geometry = evt.graphic.geometry;
       queryTask.on('complete', function(){console.log("");});
-      queryTask.on('error', function(error){console.log(error); console.log("error with query.")});  
+      queryTask.on('error', function(error){console.log(error); console.log("error with query.");});  
       queryTask.execute(query, function(result){ showResults(result, evt.graphic.geometry);
       });
     }
@@ -347,6 +350,7 @@ function getPublicLand(buffer, privateLand){
 }
   function closeHighlight() {
     map.graphics.clear();
+    map.removeLayer(rasterImgServiceLyr);
   }
   var drawPolygon = new Draw(map, { showTooltips: true });    
   
@@ -376,30 +380,8 @@ function getPublicLand(buffer, privateLand){
       }
     ];
        
-    var opts = {
-    segmentShowStroke : true,
-    segmentStrokeColor : "#fff",
-    segmentStrokeWidth : 2,
-    percentageInnerCutout : 0,
-    animationSteps : 100,
-    animationEasing : "easeOutBounce",
-    animateRotate : true,
-    animateScale : false 
-    };
-    console.log("options set");
-    var ctx = document.getElementById("myChart").getContext("2d");
-    pieChart = new Chart(ctx).Pie(data, opts);
     pvtPer.innerHTML = privatePercent + "%";   
     pubPer.innerHTML = publicPercent + "%";    
-    }
-    else{
-      //update private land data
-      pieChart.segments[0].value = privatePercent;
-      pvtPer.innerHTML = privatePercent + "%";
-      //update public land data
-      pieChart.segments[1].value = publicPercent;
-      pubPer.innerHTML = publicPercent + "%";
-      pieChart.update();
     }
   }
 
@@ -474,7 +456,7 @@ function getPublicLand(buffer, privateLand){
     esri.hide(loading);
   }
   hideLoading();
-//  on(map, "update-end", hideLoading);    
+  on(map, "update-end", hideLoading);    
     
 });
 </script>
@@ -484,7 +466,7 @@ function getPublicLand(buffer, privateLand){
   <div id="map"><img id="loadingImg" src="http://developers.arcgis.com/javascript/samples/map_showloading/images/loading.gif" style="position:absolute; right:49%; top:49%; z-index:100;" />
 
     <div class="mainStyle" id="results"><h2 id="title">Idaho Land Ownership</h2>
-    <canvas id="myChart" width="250" height="250"></canvas><br><br>
+    <br>
     <span id="yllwPie" class="pvt">Private land: <span id="privatePer"></span></span><br>
     <span class="pub">Public land: <span id="publicPer"></span></span>
     <br><br>
