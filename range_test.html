@@ -42,7 +42,7 @@ html, body, #map {
 
 <script src="http://js.arcgis.com/3.14/"></script>
 <script>
-var map, landLyr, idahoLyr, pieChart, buffGeom;
+var map, landLyr, idahoCounties, pieChart, buffGeom;
 require(["esri/map",
          "./Chart.js",
          "esri/graphic",
@@ -109,10 +109,6 @@ require(["esri/map",
     definitionExpression: "AGNCY_NAME = 'PRIVATE'"
   });
 
-  idahoLyr = new FeatureLayer(statesUrl, {
-    definitionExpression: "STATE_NAME = 'Idaho'",
-    opacity: 0
-  });
 
   rasterFnc = new RasterFunction();
   filterFnc = new RasterFunction();
@@ -153,7 +149,7 @@ require(["esri/map",
   idahoCounties.setRenderer(new SimpleRenderer(countySymbol));
   landLyr.setRenderer(new SimpleRenderer(landSymbol));
 
-  map.addLayers([idahoLyr, idahoCounties]);
+  map.addLayers([idahoCounties, idahoCounties]);
 
 
 
@@ -201,20 +197,11 @@ require(["esri/map",
   var resultFeatures = results.features;
   var relationParams = new RelationParameters();
 
-  var within = geometryEngine.within(buffGeom, idahoLyr.graphics[0].geometry);
-  var overlaps = geometryEngine.overlaps(buffGeom, idahoLyr.graphics[0].geometry);
+  var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
+  var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
   var graphic;
   var temp = new Array(resultFeatures.length);
   //Loop through each feature returned
-  if(!within && overlaps){
-       //If buffer overlaps Idaho, then only get the portion within Idaho  
-      buffGeom = geometryEngine.intersect(buffGeom, idahoLyr.graphics[0].geometry);
-  }
-  if(!within && !overlaps){
-      //If buffer is completely outside Idaho
-      console.log("outside of Idaho!");          
-      return;
-  } 
   map.graphics.add(new Graphic(buffGeom, buffSymFade));
   console.log(extent);
 
@@ -251,19 +238,10 @@ function createBuffer(polyGraphic, privateGraphic){
     if(buffOpt.checked){
       buffGeom = polyGraphic;
       //check if buffer is completely within Idaho
-      var within = geometryEngine.within(buffGeom, idahoLyr.graphics[0].geometry);
+      var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
       //check if buffer overlaps Idaho    
-      var overlaps = geometryEngine.overlaps(buffGeom, idahoLyr.graphics[0].geometry);
+      var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
       
-      if(!within && overlaps){
-         //If buffer overlaps Idaho, then only get the portion within Idaho  
-         buffGeom = geometryEngine.intersect(buffGeom, idahoLyr.graphics[0].geometry);
-      }
-      if(!within && !overlaps){
-        //If buffer is completely outside Idaho
-        console.log("outside of Idaho!");          
-        return;
-      }
       //map.graphics.add(new Graphic(buffGeom, buffSymFade));
       var privateLand = getPrivateLand(buffGeom, privateGraphic);
       var publicLand = getPublicLand(buffGeom);
@@ -429,18 +407,10 @@ function getPublicLand(buffer, privateLand){
       return;
     }
       
-    var within = geometryEngine.within(geom, idahoLyr.graphics[0].geometry);
+    var within = geometryEngine.within(geom, idahoCounties.graphics[0].geometry);
     //check if buffer overlaps Idaho    
-    var overlaps = geometryEngine.overlaps(geom, idahoLyr.graphics[0].geometry);
-    if(!within && overlaps){
-      //If buffer overlaps Idaho, then only get the portion within Idaho  
-      geom = geometryEngine.intersect(geom, idahoLyr.graphics[0].geometry);
-    }
-    if(!within && !overlaps){
-      //If buffer is completely outside Idaho, then warn the user
-      console.log("outside of Idaho!");          
-      return;
-    }  
+    var overlaps = geometryEngine.overlaps(geom, idahoCounties.graphics[0].geometry);
+
     var privateLand = getPrivateLand(geom);
     var publicLand = getPublicLand(geom, privateLand.geom);
     generateChart(privateLand, publicLand);
