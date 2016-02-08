@@ -190,6 +190,7 @@ require(["esri/map",
     queryTask.on('error', function(error){console.log(error); console.log("error with query.");});  
     queryTask.execute(query, function(result){ 
       showResults(result, evt.graphic.geometry);
+      
       rasterFnc.functionName = "Clip";
       rasterFnc.variableName = "clipper";
       rasterFnc.functionArguments = {
@@ -297,12 +298,12 @@ function getPublicLand(buffer, privateLand){
       return {
         geom: publicLand,
         area: calcArea(publicLand)
-      }  
+      } ;
     } else {
       return {
         geom: buffer,
         area: calcArea(buffer)
-      }
+      };
     }
   }
 
