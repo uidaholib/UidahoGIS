@@ -206,6 +206,8 @@ require(["esri/map",
         "Raster": rasterFnc
       };
       rasterImgServiceLyr.setRenderingRule(filterFnc);
+      console.log("cont: ");
+      console.log(rasterImgServiceLyr);
       map.addLayer(rasterImgServiceLyr);
     });
   }
