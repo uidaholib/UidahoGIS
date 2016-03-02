@@ -211,14 +211,18 @@ require(["esri/map",
       map.addLayer(rasterImgServiceLyr);
       console.log("here");
       // Following line taken from https://developers.arcgis.com/javascript/jsapi/imageservicemeasuretask-amd.html
-      var imageMeasureTask = new ImageServiceMeasureTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_test/ImageServer/measure");
       imageServiceMeasureParams = new ImageServiceMeasureParameters();
-      //imageServiceMeasureParams.fromGeometry = evt.graphic.geometry;
-      //imageServiceMeasureParams.operation = "OPERATION_AREA_PERIMETER";
-      console.log(imageMeasureTask.execute(imageServiceMeasureParams));
+      imageServiceMeasureParams.fromGeometry = evt.graphic.geometry;
+      imageServiceMeasureParams.noData = 0;
+      var imageMeasureTask = new ImageServiceMeasureTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_test/ImageServer",{
+        imageServiceParameters: imageServiceMeasureParams,
+
+      });
+      imageMeasureTask.execute(imageServiceMeasureParams, successQ);
+      console.log(rasterImgServiceLyr);
     });
   }
-  function a(result1){
+  function successQ(result1){
     console.log("here::");
     console.log(result1[0]);
     console.log(geometryEngine.geodesicArea(result1[0].geometry, "square-meters")/30);
