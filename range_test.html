@@ -52,15 +52,13 @@ require(["esri/map",
          "esri/geometry/Extent",
          "esri/InfoTemplate",
          "esri/geometry/geometryEngine",
-         "esri/layers/ArcGISDynamicMapServiceLayer",
          "esri/dijit/editing/Union",
          "esri/tasks/QueryTask",
          "esri/tasks/query",
          "esri/layers/ArcGISImageServiceLayer",
-         "esri/layers/RasterLayer", 
-         "esri/layers/PixelBlock",
+         "esri/tasks/ImageServiceMeasureTask",
+         "esri/tasks/ImageServiceMeasureParameters",
          "esri/layers/RasterFunction",
-         "esri/tasks/RelationParameters",
          "esri/symbols/SimpleMarkerSymbol",
          "esri/tasks/FeatureSet",
          "esri/SpatialReference",
@@ -75,8 +73,8 @@ require(["esri/map",
          "dojo/_base/array",
          "dojo/dom",
          "dojo/domReady!"
-], function(Map, Chart, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, ArcGISDynamicMapServiceLayer, Union, QueryTask, Query, ArcGISImageServiceLayer, RasterLayer, PixelBlock, RasterFunction, RelationParameters, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
-  src="jquery-1.12.0.min.js"
+], function(Map, Chart, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, Union, QueryTask, Query, ArcGISImageServiceLayer, ImageServiceMeasureTask, ImageServiceMeasureParameters, RasterFunction, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
+  src="jquery-1.12.0.min.js";
 
   //Set up map, layers, and properties    
   var initExtent = new Extent(-13242295.07, 5127625.01, -12141601.86, 5861420.48, new SpatialReference({wkid:3857}));
@@ -211,16 +209,17 @@ require(["esri/map",
       };
       rasterImgServiceLyr.setRenderingRule(filterFnc);
       map.addLayer(rasterImgServiceLyr);
-      rasterlyer = new RasterLayer(rasterServer, {
-        opacity: 1,
-        pixelFilter: MaskPixel
-      });
-      p = rasterImgServiceLyr.queryVisibleRasters(query, a);
-      p.then(a);
+      console.log("here");
+      // Following line taken from https://developers.arcgis.com/javascript/jsapi/imageservicemeasuretask-amd.html
+      var imageMeasureTask = new ImageServiceMeasureTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_test/ImageServer/measure");
+      imageServiceMeasureParams = new ImageServiceMeasureParameters();
+      //imageServiceMeasureParams.fromGeometry = evt.graphic.geometry;
+      //imageServiceMeasureParams.operation = "OPERATION_AREA_PERIMETER";
+      console.log(imageMeasureTask.execute(imageServiceMeasureParams));
     });
   }
   function a(result1){
-    console.log("here");
+    console.log("here::");
     console.log(result1[0]);
     console.log(geometryEngine.geodesicArea(result1[0].geometry, "square-meters")/30);
     map.removeLayer(result1[0]);
@@ -229,21 +228,10 @@ require(["esri/map",
     console.log("error: ");
     console.log(error);
   }
-  function MaskPixel(pixelData){
-      pixelBlock = pixelData.pixelBlock;
-      pixels = pixelBlock.pixels;
-      pixelNum = pixelBlock.width * pixelBlock.height;
-      console.log("pixel stuff");
-      console.log(pixelNum);
-      console.log(pixels);
-      return pixelData;
-  }
-
  function showResults(results, countyGeom) {
   buffGeom = countyGeom;
   var extent = new Extent(countyGeom);
   var resultFeatures = results.features;
-  var relationParams = new RelationParameters();
 
   var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
   var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
