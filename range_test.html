@@ -57,7 +57,7 @@ require(["esri/map",
          "esri/tasks/query",
          "esri/layers/ArcGISImageServiceLayer",
          "esri/tasks/ImageServiceMeasureTask",
-         "esri/tasks/ImageServiceMeasureParameters",
+         "esri/layers/ArcGISImageServiceVectorLayer",
          "esri/layers/RasterFunction",
          "esri/symbols/SimpleMarkerSymbol",
          "esri/tasks/FeatureSet",
@@ -73,7 +73,7 @@ require(["esri/map",
          "dojo/_base/array",
          "dojo/dom",
          "dojo/domReady!"
-], function(Map, Chart, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, Union, QueryTask, Query, ArcGISImageServiceLayer, ImageServiceMeasureTask, ImageServiceMeasureParameters, RasterFunction, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
+], function(Map, Chart, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, Union, QueryTask, Query, ArcGISImageServiceLayer, ImageServiceMeasureTask, ArcGISImageServiceVectorLayer, RasterFunction, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
   src="jquery-1.12.0.min.js";
 
   //Set up map, layers, and properties    
@@ -102,6 +102,7 @@ require(["esri/map",
  */
   var landUrl = "https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0";
   var rasterServer = "https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_test/ImageServer";
+  var vectorServer = "https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_vector/MapServer/0";
   var statesUrl = "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer/3";
   var idahoCounties = new FeatureLayer("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_county_boundaries/MapServer/0", {
       mode: FeatureLayer.MODE_SNAPSHOT,
@@ -116,6 +117,8 @@ require(["esri/map",
   rasterFnc = new RasterFunction();
   filterFnc = new RasterFunction();
   rasterImgServiceLyr = new ArcGISImageServiceLayer(rasterServer, {});
+  vectorServiceLyr = new ArcGISImageServiceVectorLayer(vectorServer, {});
+
 
   //create symbol for selected features
   symbol = new SimpleMarkerSymbol();
@@ -151,6 +154,7 @@ require(["esri/map",
   idahoCounties.setRenderer(new SimpleRenderer(countySymbol));
   landLyr.setRenderer(new SimpleRenderer(landSymbol));
 
+
   map.addLayers([idahoCounties, idahoCounties]);
 
   //map event handlers  
@@ -167,14 +171,13 @@ require(["esri/map",
   });
   function GetLayers(selectedLayers, evt){
     var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
-    var queryImgTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_test/ImageServer");
+    var vectorQueryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_vector/MapServer/0/");
     var query = new Query();
-    var query2 = new Query();
-
+    var vectorQuery = new Query();
     var queryString = "AGNCY_NAME = '";
+    vectorQuery.outFields = ["*"];
 
     query.outFields = ["AGNCY_NAME"];
-    query2.outFields = [evt.graphic.geometry];
     for(i=0; i < selectedLayers.length; i++){
       if(i != selectedLayers.length - 1)
         queryString += selectedLayers[i] + "' OR AGNCY_NAME = '";
@@ -183,11 +186,21 @@ require(["esri/map",
     }
    
     query.where = queryString;
-
     query.returnGeometry = true;
     query.geometry = evt.graphic.geometry;
+    vectorQuery.geometry = evt.graphic.geometry;
+    vectorQuery.returnGeometry = true;
+    
+
     queryTask.on('complete', function(){console.log("");});
-    queryTask.on('error', function(error){console.log(error); console.log("error with query.");});  
+    queryTask.on('error', function(error){console.log(error); console.log("error with query.");});
+    vectorQueryTask.on('complete', function(){console.log("");});
+    vectorQueryTask.on('error', function(error){console.log(error); console.log("error with Vector query.");});
+
+    vectorQueryTask.execute(vectorQuery, function(result){
+      showResults(result, evt.graphic.geometry);
+    });
+
     queryTask.execute(query, function(result){ 
       showResults(result, evt.graphic.geometry);
       
@@ -209,34 +222,15 @@ require(["esri/map",
       };
       rasterImgServiceLyr.setRenderingRule(filterFnc);
       map.addLayer(rasterImgServiceLyr);
-      console.log("here");
-      // Following line taken from https://developers.arcgis.com/javascript/jsapi/imageservicemeasuretask-amd.html
-      imageServiceMeasureParams = new ImageServiceMeasureParameters();
-      imageServiceMeasureParams.fromGeometry = evt.graphic.geometry;
-      imageServiceMeasureParams.noData = 0;
-      var imageMeasureTask = new ImageServiceMeasureTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_test/ImageServer",{
-        imageServiceParameters: imageServiceMeasureParams,
-
-      });
-      imageMeasureTask.execute(imageServiceMeasureParams, successQ);
-      console.log(rasterImgServiceLyr);
     });
   }
-  function successQ(result1){
-    console.log("here::");
-    console.log(result1[0]);
-    console.log(geometryEngine.geodesicArea(result1[0].geometry, "square-meters")/30);
-    map.removeLayer(result1[0]);
-  }
-  function b(error){
-    console.log("error: ");
-    console.log(error);
-  }
+
  function showResults(results, countyGeom) {
   buffGeom = countyGeom;
   var extent = new Extent(countyGeom);
   var resultFeatures = results.features;
-
+  console.log("result:");
+  console.log(resultFeatures);
   var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
   var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
   var graphic;
@@ -280,7 +274,9 @@ function createBuffer(polyGraphic, privateGraphic){
       //map.graphics.add(new Graphic(buffGeom, buffSymFade));
       var privateLand = getPrivateLand(buffGeom, privateGraphic);
       var publicLand = getPublicLand(buffGeom);
-      generateChart(privateLand, publicLand);   
+      console.log("buffer: ");
+      console.log(privateLand);
+      console.log(publicLand);
     } else if(drawOpt.checked){
       map.graphics.clear();
     }
