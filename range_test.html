@@ -149,11 +149,12 @@ require(["esri/map",
   var buffSymFade = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 255, 255, 0.4]), 10), null);
   var privateSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 0, 0, 0.69]));
   var publicSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULLD, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 255, 255, 0.0]));
+  var vectorSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 52, 252, 0.6901960]));
 
 
   idahoCounties.setRenderer(new SimpleRenderer(countySymbol));
   landLyr.setRenderer(new SimpleRenderer(landSymbol));
-
+  vectorServiceLyr.setRenderer(new SimpleRenderer(vectorSym));
 
   map.addLayers([idahoCounties, idahoCounties]);
 
@@ -171,11 +172,10 @@ require(["esri/map",
   });
   function GetLayers(selectedLayers, evt){
     var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
-    var vectorQueryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_vector/MapServer/0/");
+    var vectorQueryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_vector/MapServer/0");
     var query = new Query();
     var vectorQuery = new Query();
     var queryString = "AGNCY_NAME = '";
-    vectorQuery.outFields = ["*"];
 
     query.outFields = ["AGNCY_NAME"];
     for(i=0; i < selectedLayers.length; i++){
@@ -197,12 +197,8 @@ require(["esri/map",
     vectorQueryTask.on('complete', function(){console.log("");});
     vectorQueryTask.on('error', function(error){console.log(error); console.log("error with Vector query.");});
 
-    vectorQueryTask.execute(vectorQuery, function(result){
-      showResults(result, evt.graphic.geometry);
-    });
-
     queryTask.execute(query, function(result){ 
-      showResults(result, evt.graphic.geometry);
+      showResults(result, evt.graphic.geometry, false);
       
       // rasterFnc will clip the raster to the geometry of the county.
       rasterFnc.functionName = "Clip";
@@ -223,66 +219,75 @@ require(["esri/map",
       rasterImgServiceLyr.setRenderingRule(filterFnc);
       map.addLayer(rasterImgServiceLyr);
     });
+    vectorQueryTask.execute(vectorQuery, function(result){
+      console.log(result);
+      showResults(result, evt.graphic.geometry, true);
+    });
   }
 
- function showResults(results, countyGeom) {
+ function showResults(results, countyGeom, vectorQ) {
   buffGeom = countyGeom;
   var extent = new Extent(countyGeom);
   var resultFeatures = results.features;
-  console.log("result:");
-  console.log(resultFeatures);
+
   var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
   var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
   var graphic;
   var temp = new Array(resultFeatures.length);
   //Loop through each feature returned
-  map.graphics.add(new Graphic(buffGeom, buffSymFade));
-
-  dojo.forEach(resultFeatures,function(entry, i){
-      if (geometryEngine.within(entry.geometry, buffGeom)) {
-        map.graphics.add(entry);
-        entry.setSymbol(privateSym);
-      }
-  });
-
-  for (var i=0, il=resultFeatures.length; i<il; i++){
-      //Get the current feature from the featureSet.
-      //Feature is a graphic
-      graphic = resultFeatures[i];
-      temp[i] = resultFeatures[i].geometry;
-      graphic.setSymbol(privateSym);
-      graphic.setInfoTemplate(InfoTemplate);
+  //map.graphics.add(new Graphic(buffGeom, buffSymFade));
+  
+  if(!vectorQ){
+    dojo.forEach(resultFeatures,function(entry, i){
+        if (geometryEngine.within(entry.geometry, buffGeom)) {
+          map.graphics.add(entry);
+          entry.setSymbol(privateSym);
+        }
+    });
   }
+  for (var i=0, il=resultFeatures.length; i<il; i++){
+    //Get the current feature from the featureSet.
+    //Feature is a graphic
+    graphic = resultFeatures[i];
+    temp[i] = resultFeatures[i].geometry;
+    graphic.setSymbol(privateSym);
+    graphic.setInfoTemplate(InfoTemplate);
+  }
+
   graphic.setGeometry(geometryEngine.union(temp));
   graphic2 = new Graphic(graphic, privateSym);
   graphic2.setGeometry(graphic.geometry);
   graphic.setGeometry(geometryEngine.intersect(graphic2.geometry, buffGeom));
 
-  map.graphics.add(graphic);
-  createBuffer(buffGeom, graphic);
+  if(!vectorQ)
+    map.graphics.add(graphic);
+  createBuffer(buffGeom, graphic, vectorQ);
 
 }
 
-function createBuffer(polyGraphic, privateGraphic){
+function createBuffer(polyGraphic, privateGraphic, vectorQ){
+  if(vectorQ){
+    var quicky = getPrivateLand(polyGraphic, privateGraphic);
+    console.log(quicky);
+  }else{
     if(buffOpt.checked){
       buffGeom = polyGraphic;
       //check if buffer is completely within Idaho
       var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
-      //check if buffer overlaps Idaho    
+      //check if buffer overlaps Idaho
       var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
       
       //map.graphics.add(new Graphic(buffGeom, buffSymFade));
       var privateLand = getPrivateLand(buffGeom, privateGraphic);
       var publicLand = getPublicLand(buffGeom);
-      console.log("buffer: ");
-      console.log(privateLand);
-      console.log(publicLand);
+      if(!vectorQ) generateChart(privateLand, publicLand);
     } else if(drawOpt.checked){
       map.graphics.clear();
     }
     else{
       return;
     }
+  }
 }
 
 function getPrivateLand(geom, privGraphic){
@@ -290,7 +295,7 @@ function getPrivateLand(geom, privGraphic){
     //Only work with private land that intersects the buffer (essentially a select by location)  
     var priInBuffer = privGraphic.geometry;
     if (priInBuffer.rings.length > 0){
-      //mergqe all the private land features that intersects buffer into one feature
+      //merge all the private land features that intersects buffer into one feature
       var privateUnion = geometryEngine.union(priInBuffer);
       //get intersection of buffer and merge (cookie cutter)
       var privateIntersect = geometryEngine.intersect(privateUnion, geom);
