@@ -117,7 +117,10 @@ require(["esri/map",
   rasterFnc = new RasterFunction();
   filterFnc = new RasterFunction();
   rasterImgServiceLyr = new ArcGISImageServiceLayer(rasterServer, {});
-  vectorServiceLyr = new ArcGISImageServiceVectorLayer(vectorServer, {});
+  //vectorServiceLyr = new ArcGISImageServiceVectorLayer(vectorServer, {});
+  vectorServiceLyr = new FeatureLayer(vectorServer, {
+    opacity: 0.9
+  });
 
 
   //create symbol for selected features
@@ -149,7 +152,7 @@ require(["esri/map",
   var buffSymFade = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 255, 255, 0.4]), 10), null);
   var privateSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 0, 0, 0.69]));
   var publicSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULLD, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 255, 255, 0.0]));
-  var vectorSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 52, 252, 0.6901960]));
+  var vectorSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 52, 252, 0.69]));
 
 
   idahoCounties.setRenderer(new SimpleRenderer(countySymbol));
@@ -261,13 +264,16 @@ require(["esri/map",
 
   if(!vectorQ)
     map.graphics.add(graphic);
+  else
+    console.log(graphic);
   createBuffer(buffGeom, graphic, vectorQ);
 
 }
 
 function createBuffer(polyGraphic, privateGraphic, vectorQ){
   if(vectorQ){
-    var quicky = getPrivateLand(polyGraphic, privateGraphic);
+    var quicky = getPrivateLand(polyGraphic, privateGraphic, vectorQ);
+    console.log("Here: ");
     console.log(quicky);
   }else{
     if(buffOpt.checked){
@@ -278,7 +284,7 @@ function createBuffer(polyGraphic, privateGraphic, vectorQ){
       var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
       
       //map.graphics.add(new Graphic(buffGeom, buffSymFade));
-      var privateLand = getPrivateLand(buffGeom, privateGraphic);
+      var privateLand = getPrivateLand(buffGeom, privateGraphic, vectorQ);
       var publicLand = getPublicLand(buffGeom);
       if(!vectorQ) generateChart(privateLand, publicLand);
     } else if(drawOpt.checked){
@@ -290,7 +296,7 @@ function createBuffer(polyGraphic, privateGraphic, vectorQ){
   }
 }
 
-function getPrivateLand(geom, privGraphic){
+function getPrivateLand(geom, privGraphic, vectorQ){
     var privateLandGraphics = privGraphic;
     //Only work with private land that intersects the buffer (essentially a select by location)  
     var priInBuffer = privGraphic.geometry;
