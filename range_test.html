@@ -328,7 +328,7 @@ function getVectorLand(incommingResults){
   var toReturn = 0;
   var vectorFeatures = incommingResults.featureSet.features;
   dojo.forEach(vectorFeatures, function(entry, i){
-    toReturn += Math.round(geometryEngine.geodesicArea(entry.geometry, "square-meters");
+    toReturn += Math.round(geometryEngine.geodesicArea(entry.geometry, "square-meters") / 30);
   });
   
   return toReturn;
