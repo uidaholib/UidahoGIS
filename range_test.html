@@ -45,7 +45,6 @@ html, body, #map {
 <script>
 var map, landLyr, idahoCounties, pieChart, buffGeom;
 require(["esri/map",
-         "./Chart.js",
          "esri/graphic",
          "esri/graphicsUtils",
          "esri/config",
@@ -72,8 +71,9 @@ require(["esri/map",
          "dojo/on",
          "dojo/_base/array",
          "dojo/dom",
+         "dojo/promise/all",
          "dojo/domReady!"
-], function(Map, Chart, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, Union, QueryTask, Query, ArcGISImageServiceLayer, ImageServiceMeasureTask, ArcGISImageServiceVectorLayer, RasterFunction, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
+], function(Map, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, Union, QueryTask, Query, ArcGISImageServiceLayer, ImageServiceMeasureTask, ArcGISImageServiceVectorLayer, RasterFunction, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom, all) {
   src="jquery-1.12.0.min.js";
 
   //Set up map, layers, and properties    
@@ -117,10 +117,8 @@ require(["esri/map",
   rasterFnc = new RasterFunction();
   filterFnc = new RasterFunction();
   rasterImgServiceLyr = new ArcGISImageServiceLayer(rasterServer, {});
-  //vectorServiceLyr = new ArcGISImageServiceVectorLayer(vectorServer, {});
-  vectorServiceLyr = new FeatureLayer(vectorServer, {
-    opacity: 0.9
-  });
+  vectorServiceLyr = new ArcGISImageServiceVectorLayer(vectorServer, {});
+  //vectorServiceLyr = new FeatureLayer(vectorServer, { opacity: 0.9 });
 
 
   //create symbol for selected features
@@ -152,12 +150,9 @@ require(["esri/map",
   var buffSymFade = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULL, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 255, 255, 0.4]), 10), null);
   var privateSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 0, 0, 0.69]));
   var publicSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NULLD, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 255, 255, 0.0]));
-  var vectorSym = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_NULL, new Color([0, 0, 0]), 0), new Color([255, 52, 252, 0.69]));
-
 
   idahoCounties.setRenderer(new SimpleRenderer(countySymbol));
   landLyr.setRenderer(new SimpleRenderer(landSymbol));
-  vectorServiceLyr.setRenderer(new SimpleRenderer(vectorSym));
 
   map.addLayers([idahoCounties, idahoCounties]);
 
@@ -191,9 +186,10 @@ require(["esri/map",
     query.where = queryString;
     query.returnGeometry = true;
     query.geometry = evt.graphic.geometry;
+
     vectorQuery.geometry = evt.graphic.geometry;
     vectorQuery.returnGeometry = true;
-    
+    //vectorQuery.returnIdsOnly = true;
 
     queryTask.on('complete', function(){console.log("");});
     queryTask.on('error', function(error){console.log(error); console.log("error with query.");});
@@ -214,7 +210,7 @@ require(["esri/map",
       filterFnc.functionName = "Colormap";
       filterFnc.functionArguments = {
         "Colormap": [
-                    [52, 0, 255, 0],
+                    [52, 0, 255, 0], 
                     [71, 0, 255, 0]
                   ],
         "Raster": rasterFnc
@@ -222,13 +218,66 @@ require(["esri/map",
       rasterImgServiceLyr.setRenderingRule(filterFnc);
       map.addLayer(rasterImgServiceLyr);
     });
-    vectorQueryTask.execute(vectorQuery, function(result){
+    vectorQueryTask.executeForIds(vectorQuery, function(result){
       console.log(result);
-      showResults(result, evt.graphic.geometry, true);
+      VectorResults(result);
     });
   }
 
+  /** "Hold on to your diapies babies" -Tom Pickles
+  * the results variable passed in has all our IDs for the county, we just need to create a buffer
+  * containing all this info!
+  **/
+  function VectorResults(results){
+    console.log(results.length);
+    var idQuery = new Query();
+    var idQueryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_vector/MapServer/0");
+    var idQueryString = "FID=";
+    var runningTotal = 0;
+    var tempArray = [];
+    idQuery.returnGeometry = true;
+    idQuery.where = "1=1";
+
+    for(i=0; i < results.length; i++){
+      if(i%998 === 0 && i !== 0 || i == (results.length -1)){
+        // fire query
+        idQuery.objjectIds = tempArray;
+        idQueryTask.on('complete', function(result){
+          runningTotal += getVectorLand(result);
+          UpdateTotal(runningTotal);
+          result = null; // Let the garbage collector get rid of the object now.
+        });
+        idQueryTask.on('error', function(error){console.log(error); console.log("error with query.");}); // incase query fails
+        idQueryTask.execute(idQuery);
+        tempArray = [];
+      }else{
+        tempArray.push(results[i]);
+      }
+/*      if(i%999 === 0 && i !== 0 || i == (results.length -1)){
+        //console.log(idQueryString);
+        idQueryString += results[i] + "";
+        idQuery.where = idQueryString;
+        idQueryTask.on('complete', function(result){
+          runningTotal += getVectorLand(result);
+          UpdateTotal(runningTotal);
+        });
+        idQueryTask.on('error', function(error){console.log(error); console.log("error with query.");}); // incase query fails
+        idQueryTask.execute(idQuery);
+        idQueryString = "FID="; // reset query string.
+      }
+      else {
+          //idQueryString += results[i] + " OR FID=";
+      }*/
+    }
+    
+  }
+
+  function UpdateTotal(newTotal){
+    console.log(newTotal);
+  }
+
  function showResults(results, countyGeom, vectorQ) {
+
   buffGeom = countyGeom;
   var extent = new Extent(countyGeom);
   var resultFeatures = results.features;
@@ -240,17 +289,19 @@ require(["esri/map",
   //Loop through each feature returned
   //map.graphics.add(new Graphic(buffGeom, buffSymFade));
   
-  if(!vectorQ){
-    dojo.forEach(resultFeatures,function(entry, i){
-        if (geometryEngine.within(entry.geometry, buffGeom)) {
-          map.graphics.add(entry);
-          entry.setSymbol(privateSym);
-        }
-    });
-  }
+    //if(!vectorQ) // We can skip this since the vector layer isn't rendered.
+      dojo.forEach(resultFeatures,function(entry, i){
+          if (geometryEngine.within(entry.geometry, buffGeom)) {
+            map.graphics.add(entry);
+            entry.setSymbol(privateSym);
+          }
+      });
+
   for (var i=0, il=resultFeatures.length; i<il; i++){
     //Get the current feature from the featureSet.
     //Feature is a graphic
+    //This also works with the vectorLayer, but it
+    //is never rendered.
     graphic = resultFeatures[i];
     temp[i] = resultFeatures[i].geometry;
     graphic.setSymbol(privateSym);
@@ -264,36 +315,38 @@ require(["esri/map",
 
   if(!vectorQ)
     map.graphics.add(graphic);
-  else
-    console.log(graphic);
   createBuffer(buffGeom, graphic, vectorQ);
 
 }
 
 function createBuffer(polyGraphic, privateGraphic, vectorQ){
-  if(vectorQ){
-    var quicky = getPrivateLand(polyGraphic, privateGraphic, vectorQ);
-    console.log("Here: ");
-    console.log(quicky);
-  }else{
-    if(buffOpt.checked){
-      buffGeom = polyGraphic;
-      //check if buffer is completely within Idaho
-      var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
-      //check if buffer overlaps Idaho
-      var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
-      
-      //map.graphics.add(new Graphic(buffGeom, buffSymFade));
-      var privateLand = getPrivateLand(buffGeom, privateGraphic, vectorQ);
-      var publicLand = getPublicLand(buffGeom);
-      if(!vectorQ) generateChart(privateLand, publicLand);
-    } else if(drawOpt.checked){
-      map.graphics.clear();
-    }
-    else{
-      return;
-    }
+  if(buffOpt.checked){
+    buffGeom = polyGraphic;
+    //check if buffer is completely within Idaho
+    var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
+    //check if buffer overlaps Idaho
+    var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
+    
+    var privateLand = getPrivateLand(buffGeom, privateGraphic, vectorQ);
+    var publicLand = getPublicLand(buffGeom);
+    if(!vectorQ) generateChart(privateLand, publicLand);
+  } else if(drawOpt.checked){
+    map.graphics.clear();
   }
+  else{
+    return;
+  }
+  
+}
+
+function getVectorLand(incommingResults){
+  var toReturn = 0;
+  var vectorFeatures = incommingResults.featureSet.features;
+  dojo.forEach(vectorFeatures, function(entry, i){
+    toReturn += Math.round(geometryEngine.geodesicArea(entry.geometry, "square-meters");
+  });
+  
+  return toReturn;
 }
 
 function getPrivateLand(geom, privGraphic, vectorQ){
