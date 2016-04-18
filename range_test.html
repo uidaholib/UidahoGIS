@@ -253,21 +253,6 @@ require(["esri/map",
       }else{
         tempArray.push(results[i]);
       }
-/*      if(i%999 === 0 && i !== 0 || i == (results.length -1)){
-        //console.log(idQueryString);
-        idQueryString += results[i] + "";
-        idQuery.where = idQueryString;
-        idQueryTask.on('complete', function(result){
-          runningTotal += getVectorLand(result);
-          UpdateTotal(runningTotal);
-        });
-        idQueryTask.on('error', function(error){console.log(error); console.log("error with query.");}); // incase query fails
-        idQueryTask.execute(idQuery);
-        idQueryString = "FID="; // reset query string.
-      }
-      else {
-          //idQueryString += results[i] + " OR FID=";
-      }*/
     }
     
   }
