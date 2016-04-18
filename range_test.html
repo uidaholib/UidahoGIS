@@ -71,8 +71,9 @@ require(["esri/map",
          "dojo/on",
          "dojo/_base/array",
          "dojo/dom",
+         "dojo/promise/all",
          "dojo/domReady!"
-], function(Map, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, Union, QueryTask, Query, ArcGISImageServiceLayer, ImageServiceMeasureTask, ArcGISImageServiceVectorLayer, RasterFunction, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom) {
+], function(Map, Graphic, graphicsUtils, ersiConfig, Extent, InfoTemplate, geometryEngine, Union, QueryTask, Query, ArcGISImageServiceLayer, ImageServiceMeasureTask, ArcGISImageServiceVectorLayer, RasterFunction, SimpleMarkerSymbol, featureSet, SpatialReference, SimpleFillSymbol, SimpleLineSymbol, SimpleRenderer, Tiled, Draw, Color, FeatureLayer, on, array, dom, all) {
   src="jquery-1.12.0.min.js";
 
   //Set up map, layers, and properties    
@@ -185,9 +186,10 @@ require(["esri/map",
     query.where = queryString;
     query.returnGeometry = true;
     query.geometry = evt.graphic.geometry;
+
     vectorQuery.geometry = evt.graphic.geometry;
     vectorQuery.returnGeometry = true;
-    
+    //vectorQuery.returnIdsOnly = true;
 
     queryTask.on('complete', function(){console.log("");});
     queryTask.on('error', function(error){console.log(error); console.log("error with query.");});
@@ -216,13 +218,66 @@ require(["esri/map",
       rasterImgServiceLyr.setRenderingRule(filterFnc);
       map.addLayer(rasterImgServiceLyr);
     });
-    vectorQueryTask.execute(vectorQuery, function(result){
+    vectorQueryTask.executeForIds(vectorQuery, function(result){
       console.log(result);
-      showResults(result, evt.graphic.geometry, true);
+      VectorResults(result);
     });
   }
 
+  /** "Hold on to your diapies babies" -Tom Pickles
+  * the results variable passed in has all our IDs for the county, we just need to create a buffer
+  * containing all this info!
+  **/
+  function VectorResults(results){
+    console.log(results.length);
+    var idQuery = new Query();
+    var idQueryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_vector/MapServer/0");
+    var idQueryString = "FID=";
+    var runningTotal = 0;
+    var tempArray = [];
+    idQuery.returnGeometry = true;
+    idQuery.where = "1=1";
+
+    for(i=0; i < results.length; i++){
+      if(i%998 === 0 && i !== 0 || i == (results.length -1)){
+        // fire query
+        idQuery.objjectIds = tempArray;
+        idQueryTask.on('complete', function(result){
+          runningTotal += getVectorLand(result);
+          UpdateTotal(runningTotal);
+          result = null; // Let the garbage collector get rid of the object now.
+        });
+        idQueryTask.on('error', function(error){console.log(error); console.log("error with query.");}); // incase query fails
+        idQueryTask.execute(idQuery);
+        tempArray = [];
+      }else{
+        tempArray.push(results[i]);
+      }
+/*      if(i%999 === 0 && i !== 0 || i == (results.length -1)){
+        //console.log(idQueryString);
+        idQueryString += results[i] + "";
+        idQuery.where = idQueryString;
+        idQueryTask.on('complete', function(result){
+          runningTotal += getVectorLand(result);
+          UpdateTotal(runningTotal);
+        });
+        idQueryTask.on('error', function(error){console.log(error); console.log("error with query.");}); // incase query fails
+        idQueryTask.execute(idQuery);
+        idQueryString = "FID="; // reset query string.
+      }
+      else {
+          //idQueryString += results[i] + " OR FID=";
+      }*/
+    }
+    
+  }
+
+  function UpdateTotal(newTotal){
+    console.log(newTotal);
+  }
+
  function showResults(results, countyGeom, vectorQ) {
+
   buffGeom = countyGeom;
   var extent = new Extent(countyGeom);
   var resultFeatures = results.features;
@@ -234,17 +289,14 @@ require(["esri/map",
   //Loop through each feature returned
   //map.graphics.add(new Graphic(buffGeom, buffSymFade));
   
-  if(!vectorQ){
-    dojo.forEach(resultFeatures,function(entry, i){
-        if (geometryEngine.within(entry.geometry, buffGeom)) {
-          map.graphics.add(entry);
-          entry.setSymbol(privateSym);
-        }
-    });
-  }else{
-    graphic = countyGeom.graphics;
-    createBuffer(buffGeom, graphic, vectorQ);
-  }
+    //if(!vectorQ) // We can skip this since the vector layer isn't rendered.
+      dojo.forEach(resultFeatures,function(entry, i){
+          if (geometryEngine.within(entry.geometry, buffGeom)) {
+            map.graphics.add(entry);
+            entry.setSymbol(privateSym);
+          }
+      });
+
   for (var i=0, il=resultFeatures.length; i<il; i++){
     //Get the current feature from the featureSet.
     //Feature is a graphic
@@ -268,39 +320,36 @@ require(["esri/map",
 }
 
 function createBuffer(polyGraphic, privateGraphic, vectorQ){
-  if(vectorQ){
-    var quicky = getPrivateLand(polyGraphic, privateGraphic, vectorQ);
-    console.log("Here: ");
-    console.log(quicky);
-  }else{
-    if(buffOpt.checked){
-      buffGeom = polyGraphic;
-      //check if buffer is completely within Idaho
-      var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
-      //check if buffer overlaps Idaho
-      var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
-      
-      var privateLand = getPrivateLand(buffGeom, privateGraphic, vectorQ);
-      var publicLand = getPublicLand(buffGeom);
-      if(!vectorQ) generateChart(privateLand, publicLand);
-    } else if(drawOpt.checked){
-      map.graphics.clear();
-    }
-    else{
-      return;
-    }
+  if(buffOpt.checked){
+    buffGeom = polyGraphic;
+    //check if buffer is completely within Idaho
+    var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
+    //check if buffer overlaps Idaho
+    var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
+    
+    var privateLand = getPrivateLand(buffGeom, privateGraphic, vectorQ);
+    var publicLand = getPublicLand(buffGeom);
+    if(!vectorQ) generateChart(privateLand, publicLand);
+  } else if(drawOpt.checked){
+    map.graphics.clear();
   }
+  else{
+    return;
+  }
+  
+}
+
+function getVectorLand(incommingResults){
+  var toReturn = 0;
+  var vectorFeatures = incommingResults.featureSet.features;
+  dojo.forEach(vectorFeatures, function(entry, i){
+    toReturn += Math.round(geometryEngine.geodesicArea(entry.geometry, "square-meters");
+  });
+  
+  return toReturn;
 }
 
 function getPrivateLand(geom, privGraphic, vectorQ){
-    if(vectorQ){
-      dojo.forEach(resultFeatures,function(entry, i){
-        if (geometryEngine.within(entry.geometry, buffGeom)) {
-          map.graphics.add(entry);
-          entry.setSymbol(privateSym);
-        }
-    });
-    }
     var privateLandGraphics = privGraphic;
     //Only work with private land that intersects the buffer (essentially a select by location)  
     var priInBuffer = privGraphic.geometry;
