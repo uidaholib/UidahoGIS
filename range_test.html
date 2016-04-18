@@ -238,7 +238,7 @@ require(["esri/map",
     idQuery.returnGeometry = true;
     idQuery.where = "1=1";
 
-    for(i=0; i < results.length; i++){
+    for(i=0; i < results.length; i++){ // TODO rework this to fire off queries on after another, not all at once.
       if(i%998 === 0 && i !== 0 || i == (results.length -1)){
         // fire query
         idQuery.objjectIds = tempArray;
