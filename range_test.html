@@ -232,29 +232,41 @@ require(["esri/map",
     console.log(results.length);
     var idQuery = new Query();
     var idQueryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_vector/MapServer/0");
-    var idQueryString = "FID=";
-    var runningTotal = 0;
-    var tempArray = [];
     idQuery.returnGeometry = true;
     idQuery.where = "1=1";
 
-    for(i=0; i < results.length; i++){ // TODO rework this to fire off queries on after another, not all at once.
-      if(i%998 === 0 && i !== 0 || i == (results.length -1)){
-        // fire query
-        idQuery.objjectIds = tempArray;
-        idQueryTask.on('complete', function(result){
-          runningTotal += getVectorLand(result);
-          UpdateTotal(runningTotal);
-          result = null; // Let the garbage collector get rid of the object now.
-        });
-        idQueryTask.on('error', function(error){console.log(error); console.log("error with query.");}); // incase query fails
-        idQueryTask.execute(idQuery);
-        tempArray = [];
-      }else{
+    RunQuery(idQuery, idQueryTask, results, 0, 0);
+    
+  }
+
+  function RunQuery(idQuery, idQueryTask, results, currIndex, runningTotal){
+    tempArray = [];
+    if(currIndex >= results.length){
+      console.log("finished");
+      UpdateTotal(runningTotal);
+      return;
+    }
+
+    for(i=currIndex; i < (currIndex+999); i++){ // TODO rework this to fire off queries on after another, not all at once.
+      if( (currIndex - results.length) >= 0 )
+        break;
+      else{
         tempArray.push(results[i]);
       }
     }
-    
+    //console.log(i);
+    // fire query
+    idQuery.objectIds = tempArray;
+    idQueryTask.on('complete', function(result){
+      runningTotal += getVectorLand(result);
+      result = null; // Let the garbage collector get rid of the object now.
+      RunQuery(idQuery, idQueryTask, results, i, runningTotal);
+    });
+    idQueryTask.on('error', function(error){console.log(error); console.log("error with query.");}); // incase query fails
+    idQueryTask.execute(idQuery);
+    tempArray = [];
+
+
   }
 
   function UpdateTotal(newTotal){
@@ -328,7 +340,7 @@ function getVectorLand(incommingResults){
   var toReturn = 0;
   var vectorFeatures = incommingResults.featureSet.features;
   dojo.forEach(vectorFeatures, function(entry, i){
-    toReturn += Math.round(geometryEngine.geodesicArea(entry.geometry, "square-meters") / 30);
+    toReturn += Math.round(geometryEngine.geodesicArea(entry.geometry, "square-meters"));
   });
   
   return toReturn;
