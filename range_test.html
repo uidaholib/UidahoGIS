@@ -168,9 +168,18 @@ require(["esri/map",
     GetLayers(selectedAgencies, evt);
 
   });
+
+ /** GetLayers()
+  *  GerLayers() is the first query function that starts executing after a click
+  * on an Idaho county is detected, first the sma layer query is built and the
+  * SQL where fields are built. Then the query is executed and its results are
+  * passed to showResults(). The raster layer is also built, clipped, filtered
+  * and added to the map here. Finally finishing off with a call to start the 
+  * vector layer queries by finding all the objectIDs within a county.
+  */
   function GetLayers(selectedLayers, evt){
-    var queryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/ira_2014_sma/MapServer/0");
-    var vectorQueryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_vector/MapServer/0");
+    var queryTask = new QueryTask(landUrl);
+    var vectorQueryTask = new QueryTask(vectorServer);
     var query = new Query();
     var vectorQuery = new Query();
     var queryString = "AGNCY_NAME = '";
@@ -197,7 +206,7 @@ require(["esri/map",
     vectorQueryTask.on('error', function(error){console.log(error); console.log("error with Vector query.");});
 
     queryTask.execute(query, function(result){ 
-      showResults(result, evt.graphic.geometry, false);
+      showResults(result, evt.graphic.geometry);
       
       // rasterFnc will clip the raster to the geometry of the county.
       rasterFnc.functionName = "Clip";
@@ -227,11 +236,14 @@ require(["esri/map",
   /** "Hold on to your diapies babies" -Tom Pickles
   * the results variable passed in has all our IDs for the county, we just need to create a buffer
   * containing all this info!
+  *
+  * TODO: this is the begining of the vector layer analysis, the query is just
+  * initialized here, not much tuning needed.
   **/
   function VectorResults(results){
     console.log(results.length);
     var idQuery = new Query();
-    var idQueryTask = new QueryTask("https://gis-sandbox.northwestknowledge.net/arcgis/rest/services/idaho_rangeland_atlas/nlcd_vector/MapServer/0");
+    var idQueryTask = new QueryTask(vectorServer);
     idQuery.returnGeometry = true;
     idQuery.where = "1=1";
 
@@ -239,8 +251,22 @@ require(["esri/map",
     
   }
 
+
+ /** RunQuery()
+  * RunQuery takes in a prebuilt query and querytask as well as keeps a running
+  * total of the areas calculated so far. Looking at the graphic UML file will
+  * help understanding this function.
+  * 
+  * RunQuery() operates recusively because: obviously any problem worth solving
+  * is worth solving recusively </sarcasm>. But it does help, starting from the
+  * passed in "currIndex" we go until we run out of IDs or 1000 objectIDs have
+  * been collected and construct the query & execute, once the query completes
+  * we recusively call RunQuery again making sure to start at the latest index.
+  *
+  * TODO: Currently the numbers are too high for what the results should be.
+  */
   function RunQuery(idQuery, idQueryTask, results, currIndex, runningTotal){
-    tempArray = [];
+    tempArray = []; // empty array to keep 1000 objectIDs
     if(currIndex >= results.length){
       console.log("finished:");
       console.log(currIndex);
@@ -264,65 +290,84 @@ require(["esri/map",
     idQueryTask.execute(idQuery);
   }
 
+  /** UpdateTotal()
+   * Currently just displays the total of the vector layer in the console.
+   * TODO: Actually put the total recieved number into the HTML of the page.
+   */
   function UpdateTotal(newTotal){
     console.log(newTotal);
   }
 
- function showResults(results, countyGeom, vectorQ) {
+
+ /** showResults()
+  * works with the resulting queries from the sma server, it
+  * is the frist step from the resulting queries from here
+  * we do things like adding the graphics to the map and 
+  * start calculating the areas.
+  */
+ function showResults(results, countyGeom) {
 
   buffGeom = countyGeom;
-  var extent = new Extent(countyGeom);
-  var resultFeatures = results.features;
+  var extent = new Extent(countyGeom); // Selected county's geometry
+  var resultFeatures = results.features; 
 
   var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
   var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
   var graphic;
-  var temp = new Array(resultFeatures.length);
-  //Loop through each feature returned
-  //map.graphics.add(new Graphic(buffGeom, buffSymFade));
-  
-    //if(!vectorQ) // We can skip this since the vector layer isn't rendered.
-      dojo.forEach(resultFeatures,function(entry, i){
-          if (geometryEngine.within(entry.geometry, buffGeom)) {
-            map.graphics.add(entry);
-            entry.setSymbol(privateSym);
-          }
-      });
+  var temp = new Array(resultFeatures.length); // Used to temp. hold to be unioned layers.
 
+  //Loop through each feature returned & add it to the map.
+  dojo.forEach(resultFeatures,function(entry, i){
+      if (geometryEngine.within(entry.geometry, buffGeom)) {
+        map.graphics.add(entry);
+        entry.setSymbol(privateSym);
+      }
+  });
+
+  // Loop through and collect the individual feature results
+  // and add them up into one large graphic.
   for (var i=0, il=resultFeatures.length; i<il; i++){
     //Get the current feature from the featureSet.
     //Feature is a graphic
-    //This also works with the vectorLayer, but it
-    //is never rendered.
     graphic = resultFeatures[i];
     temp[i] = resultFeatures[i].geometry;
     graphic.setSymbol(privateSym);
     graphic.setInfoTemplate(InfoTemplate);
   }
 
+  // Now do some fancy shuffling to add the temporary graphic from before into
+  // the main graphic, cutting to the correct geometeries.
   graphic.setGeometry(geometryEngine.union(temp));
   graphic2 = new Graphic(graphic, privateSym);
   graphic2.setGeometry(graphic.geometry);
   graphic.setGeometry(geometryEngine.intersect(graphic2.geometry, buffGeom));
 
-  if(!vectorQ)
-    map.graphics.add(graphic);
-  createBuffer(buffGeom, graphic, vectorQ);
+  map.graphics.add(graphic);
+  createBuffer(buffGeom, graphic);
 
 }
 
-function createBuffer(polyGraphic, privateGraphic, vectorQ){
+/** createBuffer()
+ * Simple takes in the county graphic, sma graphic (in that order) and calls 
+ * their repsective functions to calculate the area(s).
+ */
+function createBuffer(polyGraphic, privateGraphic){
   buffGeom = polyGraphic;
   //check if buffer is completely within Idaho
   var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
   //check if buffer overlaps Idaho
   var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
   
-  var privateLand = getPrivateLand(buffGeom, privateGraphic, vectorQ);
+  var privateLand = getPrivateLand(buffGeom, privateGraphic);
   var publicLand = getPublicLand(buffGeom);
-  if(!vectorQ) generateChart(privateLand, publicLand);
+  generateChart(privateLand, publicLand);
 }
 
+/** getVectorLand(incommingResults)
+ * This function is called after a query has sucessfully completed, incommingResults
+ * is the result from the query and it contains our vectorLayer geometries.
+ * TODO: This mayber the issue where we're overcounting the area!
+ */
 function getVectorLand(incommingResults){
   var toReturn = 0;
   var vectorFeatures = incommingResults.featureSet.features;
@@ -333,7 +378,7 @@ function getVectorLand(incommingResults){
   return toReturn;
 }
 
-function getPrivateLand(geom, privGraphic, vectorQ){
+function getPrivateLand(geom, privGraphic){
     var privateLandGraphics = privGraphic;
     //Only work with private land that intersects the buffer (essentially a select by location)  
     var priInBuffer = privGraphic.geometry;
