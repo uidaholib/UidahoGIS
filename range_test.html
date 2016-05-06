@@ -242,19 +242,17 @@ require(["esri/map",
   function RunQuery(idQuery, idQueryTask, results, currIndex, runningTotal){
     tempArray = [];
     if(currIndex >= results.length){
-      console.log("finished");
+      console.log("finished:");
+      console.log(currIndex);
+      console.log(results.length);
       UpdateTotal(runningTotal);
       return;
     }
 
-    for(i=currIndex; i < (currIndex+999); i++){ // TODO rework this to fire off queries on after another, not all at once.
-      if( (currIndex - results.length) >= 0 )
-        break;
-      else{
-        tempArray.push(results[i]);
-      }
+    for(i=currIndex; i < (currIndex+999) && i < results.length; i++){ 
+      tempArray.push(results[i]);
     }
-    //console.log(i);
+    
     // fire query
     idQuery.objectIds = tempArray;
     idQueryTask.on('complete', function(result){
@@ -264,9 +262,6 @@ require(["esri/map",
     });
     idQueryTask.on('error', function(error){console.log(error); console.log("error with query.");}); // incase query fails
     idQueryTask.execute(idQuery);
-    tempArray = [];
-
-
   }
 
   function UpdateTotal(newTotal){
@@ -317,23 +312,15 @@ require(["esri/map",
 }
 
 function createBuffer(polyGraphic, privateGraphic, vectorQ){
-  if(buffOpt.checked){
-    buffGeom = polyGraphic;
-    //check if buffer is completely within Idaho
-    var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
-    //check if buffer overlaps Idaho
-    var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
-    
-    var privateLand = getPrivateLand(buffGeom, privateGraphic, vectorQ);
-    var publicLand = getPublicLand(buffGeom);
-    if(!vectorQ) generateChart(privateLand, publicLand);
-  } else if(drawOpt.checked){
-    map.graphics.clear();
-  }
-  else{
-    return;
-  }
+  buffGeom = polyGraphic;
+  //check if buffer is completely within Idaho
+  var within = geometryEngine.within(buffGeom, idahoCounties.graphics[0].geometry);
+  //check if buffer overlaps Idaho
+  var overlaps = geometryEngine.overlaps(buffGeom, idahoCounties.graphics[0].geometry);
   
+  var privateLand = getPrivateLand(buffGeom, privateGraphic, vectorQ);
+  var publicLand = getPublicLand(buffGeom);
+  if(!vectorQ) generateChart(privateLand, publicLand);
 }
 
 function getVectorLand(incommingResults){
@@ -421,8 +408,7 @@ function getPublicLand(buffer, privateLand){
   function generateChart(pvtData, pubData){
     privatePercent = Math.round((pvtData.area / pubData.area) * 100);
     publicPercent = 100 - privatePercent;
-    if(!drawOpt.checked)
-      map.graphics.add(new Graphic(buffGeom, buffSym));
+    map.graphics.add(new Graphic(buffGeom, buffSym));
     if(!pieChart){
       var data = [
       {
@@ -444,8 +430,6 @@ function getPublicLand(buffer, privateLand){
     }
   }
 
-  var buffOpt = dom.byId("buffOpt");
-  var drawOpt = dom.byId("drawOpt");
   var pvtPer = dom.byId("privatePer");
   var pubPer = dom.byId("publicPer");
   var baseMapChange = dom.byId("baseMap");
@@ -465,18 +449,6 @@ function getPublicLand(buffer, privateLand){
       }
     return selected;
   }
-  on(buffOpt, "click", function(evt){
-    if(buffOpt.checked){
-      map.disableMapNavigation();
-      drawPolygon.deactivate();
-    }
-  });
-    
-  on(drawOpt, "click", function(evt){
-    if(drawOpt.checked){
-      drawPolygon.activate(Draw.POLYGON);
-    }
-  });  
     
   on(drawPolygon, "draw-end", function(evt){  
     drawPolygon.deactivate();
@@ -518,9 +490,6 @@ function getPublicLand(buffer, privateLand){
     <br>
     <span id="yllwPie" class="pvt">Selected Land: <span id="privatePer"></span></span><br>
     <span class="pub">All Other Land: <span id="publicPer"></span></span>
-    <br><br>
-    <br><br><input type="radio" name="operation" id="buffOpt" checked>View ownership by county
-    <br><br><input type="radio" name="operation" id="drawOpt">View ownership by polygon   
     <br><br>
     <select id="baseMap">
       <option value="topo">Topo</option>
