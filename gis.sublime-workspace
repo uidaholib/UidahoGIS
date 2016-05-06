@@ -1,0 +1,2296 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"buff",
+				"buffer"
+			],
+			[
+				"Blue",
+				"BluetoothUtils"
+			],
+			[
+				"resul",
+				"result"
+			],
+			[
+				"curre",
+				"currIndex"
+			],
+			[
+				"resu",
+				"results"
+			],
+			[
+				"idQ",
+				"idQuery"
+			],
+			[
+				"idQu",
+				"idQueryTask"
+			],
+			[
+				"temp",
+				"tempArray"
+			],
+			[
+				"idQuer",
+				"idQueryTask"
+			],
+			[
+				"idq",
+				"idquery"
+			],
+			[
+				"feau",
+				"features"
+			],
+			[
+				"quer",
+				"query"
+			],
+			[
+				"object",
+				"objectIds"
+			],
+			[
+				"update",
+				"UpdateTotal"
+			],
+			[
+				"result",
+				"result"
+			],
+			[
+				"new",
+				"newTotal"
+			],
+			[
+				"geom",
+				"geometry"
+			],
+			[
+				"fea",
+				"features"
+			],
+			[
+				"runni",
+				"runningTotal"
+			],
+			[
+				"out",
+				"outFields"
+			],
+			[
+				"idqu",
+				"idQueryString"
+			],
+			[
+				"idquery",
+				"idQueryTask"
+			],
+			[
+				"vect",
+				"vectorQuery"
+			],
+			[
+				"Vector",
+				"VectorTileLayer"
+			],
+			[
+				"run",
+				"runningTotal"
+			],
+			[
+				"gra",
+				"graphics"
+			],
+			[
+				"Feat",
+				"FeatureLayer"
+			],
+			[
+				"Query",
+				"QueryTask"
+			],
+			[
+				"county",
+				"countyGeom"
+			],
+			[
+				"Vecto",
+				"VectorQ"
+			],
+			[
+				"Vec",
+				"vectorQ"
+			],
+			[
+				"public",
+				"publicLand"
+			],
+			[
+				"priv",
+				"privateSym"
+			],
+			[
+				"B",
+				"BluetoothSocket"
+			],
+			[
+				"Ex",
+				"ExtractData"
+			],
+			[
+				"area",
+				"calcArea"
+			],
+			[
+				"reslut",
+				"resultFeatures"
+			],
+			[
+				"geo",
+				"geometry"
+			],
+			[
+				"count",
+				"countyGeom"
+			],
+			[
+				"vec",
+				"vectorServiceLyr"
+			],
+			[
+				"return",
+				"returnGeometry"
+			],
+			[
+				"vecot",
+				"vectorQueryTask"
+			],
+			[
+				"Que",
+				"QueryTask"
+			],
+			[
+				"Fea",
+				"FeatureLayer"
+			],
+			[
+				"ArcGIS",
+				"ArcGISImageServiceVectorLayer"
+			],
+			[
+				"bt",
+				"btAdapter"
+			],
+			[
+				"image",
+				"imageServiceMeasureParams"
+			],
+			[
+				"imageSer",
+				"imageServiceMeasureParams"
+			],
+			[
+				"Image",
+				"ImageServiceMeasureParameters"
+			],
+			[
+				"raster",
+				"rasterServer"
+			],
+			[
+				"Qu",
+				"QueryTask"
+			],
+			[
+				"pixel",
+				"pixels"
+			],
+			[
+				"pix",
+				"pixelNum"
+			],
+			[
+				"rasterly",
+				"rasterlyer"
+			],
+			[
+				"addLay",
+				"addLayer"
+			],
+			[
+				"pi",
+				"pixelNum"
+			],
+			[
+				"Rasn",
+				"rasterFnc"
+			],
+			[
+				"rast",
+				"rasterImgServiceLyr"
+			],
+			[
+				"SendDe",
+				"SendDebug"
+			],
+			[
+				"readby",
+				"readBytes"
+			],
+			[
+				"readbyt",
+				"readBytesUntil"
+			],
+			[
+				"Serial",
+				"Serial1"
+			],
+			[
+				"Se",
+				"Serial1"
+			],
+			[
+				"Send",
+				"SendDebug"
+			],
+			[
+				"inte",
+				"interface"
+			],
+			[
+				"query",
+				"queryString"
+			],
+			[
+				"qu",
+				"queryString"
+			],
+			[
+				"selec",
+				"selectedLayers"
+			],
+			[
+				"hid",
+				"hideLoading"
+			],
+			[
+				"sle",
+				"selected"
+			],
+			[
+				"check",
+				"checkboxes"
+			],
+			[
+				"union",
+				"unionedLayer"
+			],
+			[
+				"function",
+				"functionArguments"
+			],
+			[
+				"filter",
+				"filterFnc"
+			],
+			[
+				"ra",
+				"rasterImgServiceLyr"
+			],
+			[
+				"arc",
+				"ArcGISImageServiceLayer"
+			],
+			[
+				"Raster",
+				"RasterFunction"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"for",
+				"forcedInput"
+			],
+			[
+				"range",
+				"rangelandLayer"
+			],
+			[
+				"privatePer",
+				"privatePercent"
+			],
+			[
+				"pvt",
+				"pvtData"
+			],
+			[
+				"publi",
+				"publicPercent"
+			],
+			[
+				"priva",
+				"privateLand"
+			],
+			[
+				"privateLand",
+				"privateLandGeoms"
+			],
+			[
+				"pub",
+				"publicLand"
+			],
+			[
+				"graphi",
+				"graphic"
+			],
+			[
+				"get",
+				"GetDepth"
+			],
+			[
+				"coun",
+				"countyGeom"
+			],
+			[
+				"privateLandG",
+				"privateLandGeoms"
+			],
+			[
+				"inter",
+				"intersects"
+			],
+			[
+				"privateLan",
+				"privateLandGeoms"
+			],
+			[
+				"buffSym",
+				"buffSymFade"
+			],
+			[
+				"graphic",
+				"graphicsUtils"
+			],
+			[
+				"poly",
+				"polyGraphic"
+			],
+			[
+				"priave",
+				"privateLand"
+			],
+			[
+				"ge",
+				"geometry"
+			],
+			[
+				"creat",
+				"createBuffer"
+			],
+			[
+				"digital",
+				"digitalRead"
+			],
+			[
+				"show",
+				"showResults"
+			],
+			[
+				"gemo",
+				"geometry"
+			],
+			[
+				"que",
+				"query"
+			],
+			[
+				"time",
+				"timeSpent"
+			],
+			[
+				"age",
+				"agency"
+			],
+			[
+				"MAIN",
+				"mainMotor"
+			],
+			[
+				"main",
+				"mainMotor"
+			],
+			[
+				"us",
+				"userInput"
+			],
+			[
+				"ser",
+				"servo.h"
+			],
+			[
+				"basem",
+				"baseMapChange"
+			],
+			[
+				"bas",
+				"baseMapChange"
+			],
+			[
+				"by",
+				"byId"
+			],
+			[
+				"land",
+				"landSymbol"
+			],
+			[
+				"buffS",
+				"buffSymFade"
+			],
+			[
+				"la",
+				"landSymbol"
+			],
+			[
+				"Idaho",
+				"idahoCounties"
+			],
+			[
+				"info",
+				"infoTemplate"
+			],
+			[
+				"pri",
+				"privateLand"
+			],
+			[
+				"coutn",
+				"countySymbol"
+			],
+			[
+				"idaho",
+				"idahoCounties"
+			],
+			[
+				"be",
+				"best"
+			],
+			[
+				"in",
+				"indexer"
+			],
+			[
+				"or",
+				"original"
+			],
+			[
+				"x",
+				"x2"
+			],
+			[
+				"su",
+				"subI"
+			],
+			[
+				"hold",
+				"holder"
+			],
+			[
+				"hol",
+				"holder2"
+			],
+			[
+				"no",
+				"nodetmpParent"
+			],
+			[
+				"nod",
+				"nodePointTwo"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "range_test.html",
+			"settings":
+			{
+				"buffer_size": 17945,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 266.0,
+		"last_filter": "menu",
+		"selected_items":
+		[
+			[
+				"menu",
+				"View: Toggle Menu"
+			],
+			[
+				"comment",
+				"Toggle Block Comment"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"update",
+				"Package Control: Upgrade/Overwrite All Packages"
+			],
+			[
+				"view",
+				"View: Toggle Minimap"
+			],
+			[
+				"add fold",
+				"Project: Add Folder"
+			],
+			[
+				"menyu",
+				"Preferences: SublimeLinter Key Bindings – User"
+			],
+			[
+				"menuy",
+				"Preferences: SublimeLinter Key Bindings – User"
+			],
+			[
+				"project",
+				"Project: Save As"
+			],
+			[
+				"commen",
+				"Toggle Block Comment"
+			],
+			[
+				"themr",
+				"Themr: List themes"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"save as",
+				"Project: Save As"
+			],
+			[
+				"men",
+				"View: Toggle Menu"
+			],
+			[
+				"com",
+				"Toggle Block Comment"
+			],
+			[
+				"comm",
+				"Toggle Block Comment"
+			],
+			[
+				"block",
+				"Toggle Block Comment"
+			],
+			[
+				"jscs",
+				"JSCS Formatter: Format this file"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"latex",
+				"LaTeXTools: Toggle focus (PDF/editor)"
+			],
+			[
+				"latextools",
+				"LaTeXTools: Reconfigure and migrate settings"
+			],
+			[
+				"late",
+				"LaTeXTools: View PDF"
+			],
+			[
+				"comme",
+				"Toggle Block Comment"
+			],
+			[
+				"instlal",
+				"Package Control: Install Package"
+			],
+			[
+				"them",
+				"Themr: Toggle Theme Settings"
+			],
+			[
+				"the",
+				"Themr: Toggle Theme Settings"
+			],
+			[
+				"th",
+				"Themr: List themes"
+			],
+			[
+				"themr:",
+				"Themr: Toggle Theme Settings"
+			],
+			[
+				"themr:to",
+				"Themr: Toggle Theme Settings"
+			],
+			[
+				"themr: to",
+				"Themr: Toggle Theme Settings"
+			],
+			[
+				"themr: tog",
+				"Themr: Toggle Theme Settings"
+			],
+			[
+				"therm",
+				"Themr: List themes"
+			],
+			[
+				"wo",
+				"Word Wrap: Toggle"
+			],
+			[
+				"word",
+				"Word Wrap: Toggle"
+			],
+			[
+				"t",
+				"Themr: List themes"
+			],
+			[
+				"pvr",
+				"PackageResourceViewer: Extract Package"
+			],
+			[
+				"ther",
+				"Themr: List themes"
+			],
+			[
+				"prv",
+				"PackageResourceViewer: Extract Package"
+			],
+			[
+				"add re",
+				"Package Control: Add Repository"
+			],
+			[
+				"instl",
+				"Package Control: Install Package"
+			],
+			[
+				"add",
+				"Package Control: Add Repository"
+			],
+			[
+				"intall",
+				"Package Control: Install Package"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"sublimelinter: w",
+				"SublimeLinter: Don't Make Warnings Passive"
+			],
+			[
+				"sublimelinter",
+				"SublimeLinter: Make Warnings Passive"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"sublime",
+				"SublimeLinter: Choose Lint Mode"
+			],
+			[
+				"add rep",
+				"Package Control: Add Repository"
+			],
+			[
+				"package insta",
+				"Package Control: Install Package"
+			],
+			[
+				"package control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"package Control:in",
+				"Package Control: Install Package"
+			],
+			[
+				"package Control:re",
+				"Package Control: Remove Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"themr: Togg",
+				"Themr: Toggle Theme Settings"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"Todo",
+				"TodoReview: Project Files"
+			],
+			[
+				"Install",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"About"
+			]
+		],
+		"width": 503.0
+	},
+	"console":
+	{
+		"height": 616.0,
+		"history":
+		[
+			"print(\"hello\")",
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/jordan/public_html",
+		"/home/jordan/public_html/gis"
+	],
+	"file_history":
+	[
+		"/home/jordan/userFlow.uml",
+		"/home/jordan/public_html/gis/workFlow.uml",
+		"/home/jordan/Documents/school/autocots/src/android/app/src/main/java/com/cots/cotscontroller/BluetoothUtils.java",
+		"/home/jordan/Documents/school/autocots/src/android/app/src/main/java/com/cots/cotscontroller/ControllerActivity.java",
+		"/home/jordan/Documents/school/autocots/src/android/app/src/main/java/com/cots/cotscontroller/ControllerFragment.java",
+		"/home/jordan/Documents/school/autocots/src/android/app/src/main/java/com/cots/cotscontroller/MainActivity.java",
+		"/home/jordan/Documents/school/autocots/src/arduino/CotsBots/MotorControl.cpp",
+		"/home/jordan/public_html/gis/range_test.html",
+		"/home/jordan/countSheepJL.cpp",
+		"/home/jordan/Documents/school/autocots/src/arduino/CotsBots/XbeeReceive.cpp",
+		"/home/jordan/Documents/school/autocots/src/arduino/CotsBots/Utilities.h",
+		"/home/jordan/Documents/school/autocots/src/arduino/CotsBots/XBeeReceive.h",
+		"/home/jordan/Documents/school/autocots/src/arduino/CotsBots/Utilities.cpp",
+		"/home/jordan/Documents/school/autocots/src/android/app/src/main/java/com/cots/cotscontroller/HeartBeatFragment.java",
+		"/home/jordan/public_html/gis/layers.js",
+		"/home/jordan/public_html/range_test.html",
+		"/home/jordan/Documents/school/autocots/src/arduino/CotsBots/SystemControl.cpp",
+		"/home/jordan/Documents/school/autocots/src/arduino/CotsBots/XBeeTransmit.cpp",
+		"/home/jordan/Documents/school/autocots/src/arduino/CotsBots/CotsBots.ino",
+		"/home/jordan/Documents/school/autocots/src/arduino/CotsBots/SystemControl.h",
+		"/home/jordan/Documents/school/autocots/src/android/app/src/main/AndroidManifest.xml",
+		"/home/jordan/tmp/yaourt-tmp-jordan/sysuplist",
+		"/home/jordan/tmp/autocots/src/arduino/CotsBots/CotsBots.ino",
+		"/home/jordan/Documents/school/autocots/src/arduino/CotsBots/Packet.cpp",
+		"/home/jordan/Documents/school/autocots/src/android/app/src/main/java/com/cots/cotscontroller/XbeeFragment.java",
+		"/home/jordan/Documents/school/autocots/src/arduino/CotsBots/Packet.h",
+		"/home/jordan/Documents/school/autocots/src/android/app/build.gradle",
+		"/home/jordan/Documents/school/autocots/src/android/build.gradle",
+		"/home/jordan/Documents/school/autocots/src/android/settings.gradle",
+		"/home/jordan/Documents/school/autocots/src/android/gradle.properties",
+		"/home/jordan/Documents/school/autocots/src/android/gradlew",
+		"/home/jordan/Documents/school/autocots/src/android/local.properties",
+		"/home/jordan/Documents/school/autocots/src/android/gradle/wrapper/gradle-wrapper.properties",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/android/app/src/main/java/com/cots/cotscontroller/BluetoothUtils.java",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/android/app/src/main/java/com/cots/cotscontroller/XbeeFragment.java",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/Packet.cpp",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/XbeeReceive.cpp",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/XBeeTransmit.cpp",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/Utilities.cpp",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/CotsBots.ino",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/xbeetmp/xbeetmp.ino",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/xbeetmp.ino",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/XbeeReceive.h",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/Packet.h",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/SystemControl.cpp",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/SystemControl.h",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/Utilities.h",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/XBeeTransmit.h",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/MotorControl.h",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots/MotorControl.cpp",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/android/local.properties",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/android/build.gradle",
+		"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/android/._local.properties",
+		"/home/jordan/.i3/config",
+		"/home/jordan/.i3status.conf",
+		"/home/jordan/Documents/school/cs472/project2/node.h",
+		"/home/jordan/Documents/school/cs472/project2/individual.h",
+		"/home/jordan/Documents/school/cs472/project2/node.cpp",
+		"/home/jordan/Documents/school/cs472/project2/main.cpp",
+		"/home/jordan/Documents/school/cs472/project2/individual.cpp",
+		"/home/jordan/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
+		"/home/jordan/.config/fish/config.fish",
+		"/home/jordan/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/jordan/Documents/school/cs472/project4/reportFinal.tex",
+		"/home/jordan/Documents/school/cs472/project2/report.tex",
+		"/home/jordan/Documents/school/cs472/project3/report.tex",
+		"/home/jordan/mnt/droplet/srv/http/index.html",
+		"/home/jordan/Documents/school/cs472/project2/GPProjectData.csv",
+		"/home/jordan/Downloads/PersistantHeaders/index.html",
+		"/home/jordan/.i3/calen.sh",
+		"/home/jordan/.xinitrc",
+		"/home/jordan/mnt/droplet/home/alarm/evo/servo.h",
+		"/home/jordan/mnt/droplet/home/alarm/evo/node.h",
+		"/home/jordan/mnt/droplet/home/alarm/evo/motor.h",
+		"/home/jordan/mnt/droplet/home/alarm/evo/individual.h",
+		"/home/jordan/Documents/school/cs472/project2/data.csv",
+		"/home/jordan/mnt/droplet/home/alarm/evo/main.cpp",
+		"/home/jordan/mnt/droplet/home/alarm/evo/node.cpp",
+		"/home/jordan/mnt/droplet/home/alarm/evo/individual.cpp",
+		"/home/jordan/mnt/droplet/home/alarm/evo/motor.cpp",
+		"/home/jordan/mnt/droplet/home/alarm/evo/sonar.py",
+		"/home/jordan/Downloads/range_test (2).html",
+		"/home/jordan/public_html/Chart.js",
+		"/home/jordan/mnt/droplet/home/alarm/motor.h",
+		"/home/jordan/mnt/droplet/home/alarm/servo.h",
+		"/home/jordan/mnt/droplet/home/alarm/main.cpp",
+		"/home/jordan/.i3/oTime.py",
+		"/home/jordan/.i3/i3status.conf",
+		"/home/jordan/.i3/i3config/config",
+		"/home/jordan/main.c",
+		"/home/jordan/main.cpp",
+		"/home/jordan/Documents/school/cs472/project2/report.log",
+		"/home/jordan/Documents/school/cs472/project2/.gitignore",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/customizr/inc/assets/css/blue2.min.css",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/customizr/inc/assets/css/blue2.css",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/customizr/inc/assets/css/blue.min.css",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/customizr/inc/assets/css/blue.css",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/customizr/style.css",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/customizr/sidebar-left.php",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/customizr/index.php",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/customizr/header.php",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/customizr/functions.php",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/customizr/footer.php",
+		"/home/jordan/Documents/school/cs472/project2/test.txt",
+		"/home/jordan/Documents/school/cs472/project2/math.cpp",
+		"/home/jordan/tmp/tmp/popup.js",
+		"/home/jordan/tmp/tmp/popup.html",
+		"/home/jordan/tmp/tmp/manifest.json",
+		"/home/jordan/tmp/popup.js",
+		"/home/jordan/tmp/popup.html",
+		"/home/jordan/tmp/manifest.json",
+		"/home/jordan/Documents/tmp/solve.cpp",
+		"/home/jordan/Documents/tmp/output.txt",
+		"/home/jordan/.config/sublime-text-3/Packages/User/SublimeLinter/Afterglow-monokai (SL).tmTheme",
+		"/home/jordan/Documents/tmp/Solver.java",
+		"/home/jordan/Documents/tmp/tickTak.java",
+		"/home/jordan/Documents/school/cs472/report.tex",
+		"/home/jordan/Downloads/Resume201510020129.txt (1).txt",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/awaken/index.php",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/awaken/header.php",
+		"/home/jordan/mnt/droplet/srv/http/wp-content/themes/awaken/css/materialize.css",
+		"/home/jordan/Documents/school/cs472/project2/tmp/individual.cpp",
+		"/home/jordan/Documents/school/cs472/project2/tmp/node.h",
+		"/home/jordan/Documents/school/cs472/project2/tmp/test.cpp",
+		"/home/jordan/Documents/school/cs472/project2/tmp/report.tex",
+		"/home/jordan/Documents/school/cs472/project2/tmp/node.cpp",
+		"/home/jordan/Documents/school/cs472/individal.h",
+		"/home/jordan/Documents/school/cs472/population.h"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"/home/jordan/Documents/school/autocots/src/arduino",
+			"/home/jordan/Documents/school/autocots/src/android",
+			"/home/jordan/Documents/school/autocots/src/arduino",
+			"/home/jordan/Documents/school/autocots/src/android",
+			"/home/jordan/Documents/school/autocots/src/arduino",
+			"/home/jordan/Documents/school/autocots/src/android",
+			"/home/jordan/Documents/school/autocots/src/arduino",
+			"/home/jordan/Documents/school/autocots/src/android",
+			"/home/jordan/Documents/school/autocots/src/arduino",
+			"/home/jordan/Documents/school/autocots/src/android",
+			"/home/jordan/Documents/school/autocots/src/android/",
+			"/home/jordan/Documents/school/autocots/src/android/app/src/main/java",
+			"/home/jordan/Documents/school/autocots/src/arduino/CotsBots",
+			"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/",
+			"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/android/app/src/main/java",
+			"/home/jordan/Documents/school/autocots/src/android/",
+			"/home/jordan/Documents/school/autocots/src/android/app",
+			"/home/jordan/Documents/school/autocots/src/arduino/CotsBots",
+			"/home/jordan/Documents/school/pearhill-autocots-1dea01da0b93 2/src/arduino/CotsBots",
+			"",
+			"/home/jordan/public_html/libertyinnorthkorea/git-repo/",
+			"/home/jordan/public_html/libertyinnorthkorea/git-repo/wp-content/themes/linkglobal",
+			"/home/jordan/mnt/drop/srv/http/wp-content/themes/twentyfifteen",
+			"/home/jordan/mnt/drop/srv/http,/home/jordan/mnt/drop/srv/http/wp-content/themes/twentyfifteen",
+			"/home/jordan/mnt/drop/srv/http",
+			"/home/jordan/mnt/drop",
+			"/home/jordan/public_html/libertyinnorthkorea/git-repo",
+			"/home/jordan/mnt/drop/srv/http",
+			"/usr/share/arduino",
+			"/home/jordan/Arduino/libraries",
+			"/home/jordan/public_html/libertyinnorthkorea/git-repo",
+			"/home/jordan/public_html/search",
+			"/home/jordan/public_html/libertyinnorthkorea/git-repo/wp-content",
+			"/home/jordan/.config/sublime-text-3/",
+			"/home/jordan/.config/sublime-text-3/Packages/",
+			"/home/jordan/.config/sublime-text-3/Packages/Stino/",
+			"/home/jordan/.config/sublime-text-3/Packages/Stino/preset",
+			"/home/jordan/.config/sublime-text-3/Packages/Stino/",
+			"/usr/share/arduino",
+			"/home/jordan/public_html/libertyinnorthkorea/",
+			"/home/jordan/public_html/libertyinnorthkorea/git-repo/",
+			"/home/jordan/public_html/libertyinnorthkorea/git-repo/wp-content/themes/linkglobal",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			" Idaho county cli",
+			"showResults",
+			"drawOpt",
+			"buffopt",
+			"generateChart",
+			"chart",
+			"getVectorLand",
+			"msg",
+			"bytes",
+			"btre",
+			"btRecieve_textview",
+			"btrecieveString",
+			"btRecieveString",
+			"XbeeReceivedPacket",
+			"btrec",
+			"btstring",
+			"XbeeReceivedPacket",
+			"btreci",
+			"write",
+			"pin = 4",
+			"steering",
+			"drivepin",
+			"leftDirectionPin",
+			"getVectorLand",
+			"within",
+			"UpdateTotal",
+			"getVectorLand",
+			"getPrivate",
+			"getVectorLand",
+			"idQueryString",
+			"Deferred",
+			"getVectorLand",
+			"UpdateTotal",
+			"yllwPie",
+			"selected land",
+			"selected",
+			"console.log",
+			"getVectorLand",
+			"console.log",
+			"getVectorLand",
+			"calcArea",
+			"calcarea",
+			"getVectorLand",
+			"calcArea",
+			"getVectorLand",
+			"foreach",
+			"calcArea",
+			"selectedLayers",
+			"VectorTileLayer",
+			"tile",
+			"CheckChecksum",
+			"checksum",
+			"dojo",
+			"map.add",
+			"vectorlayer",
+			"Received from:",
+			"Request:data:send",
+			"sendbyte",
+			"ArcGISImageServiceVectorLayer",
+			"querytask",
+			"/head",
+			"ErrorMessagePacket",
+			"Packet Index out of bounds",
+			"vectorl",
+			"privateSym",
+			"HERE",
+			"vectorServiceLyr",
+			"createBuffer",
+			"chart",
+			"btSocket",
+			"Socket",
+			"socket",
+			"launchListeningThread",
+			"SendResponseToMaster",
+			"status:",
+			"Status:",
+			"payload",
+			"payload:",
+			"payload",
+			"payload:",
+			"heartbeat",
+			"TAG",
+			"launchListeningThread",
+			"runnable",
+			"calcArea",
+			"vector",
+			"vectorServer",
+			"vector",
+			"vectorServer",
+			"vectorSer",
+			"featureLayer",
+			"landUrl",
+			"rasterServer",
+			"queryImgTask",
+			"heartbeat",
+			"FlushSerial",
+			"sendbytes",
+			"sendtomas",
+			"sendresponseto",
+			"sendrespon",
+			"sendbyt",
+			"heartbeat",
+			"receivedh",
+			"write",
+			"btRecieveString",
+			"heartbeat",
+			"HeartBeatFragment",
+			"recieved",
+			"btadapter",
+			"bluetoothadapter",
+			"server",
+			"buffer",
+			"getOutputStream",
+			"Log",
+			"aliver",
+			"sendHeartBeat",
+			"runHeartBeat",
+			"Postdelayed",
+			"tobot",
+			"sendCmdToBot(",
+			"heartbeat",
+			"btAdapter",
+			"context",
+			"nodesDiscovered",
+			"getInputStream",
+			"servicemeasure",
+			"relationParams",
+			"RelationParameters"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"idahoCounties",
+			",",
+			",\\n",
+			"Serial2",
+			"Serial1",
+			"Serial.println(F(",
+			"SendToServer",
+			" gpsSerial",
+			" ",
+			"none",
+			"jQuery("
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "range_test.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 17945,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10512,
+								10512
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/itg.dark (SL).tmTheme",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 6086.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 36.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": false,
+	"output.1435254886.1821117":
+	{
+		"height": 104.0
+	},
+	"output.1435256479.0428977":
+	{
+		"height": 104.0
+	},
+	"output.1435704772.2499695":
+	{
+		"height": 104.0
+	},
+	"output.1435705840.1431422":
+	{
+		"height": 104.0
+	},
+	"output.1435707536.1398594":
+	{
+		"height": 104.0
+	},
+	"output.GPS":
+	{
+		"height": 319.0
+	},
+	"output.build|/home/jordan/Arduino/GPS|1435595556.3600583":
+	{
+		"height": 104.0
+	},
+	"output.build|/home/jordan/Arduino/GPS|1435770986.2346995":
+	{
+		"height": 520.0
+	},
+	"output.build|/home/jordan/Arduino/GPS|1435771023.1187928":
+	{
+		"height": 644.0
+	},
+	"output.build|/home/jordan/Arduino/GPS|1435771076.4045463":
+	{
+		"height": 561.0
+	},
+	"output.build|/home/jordan/Arduino/GPS|1435771108.8460767":
+	{
+		"height": 104.0
+	},
+	"output.build|/home/jordan/Arduino/GPS|1435772312.6005092":
+	{
+		"height": 104.0
+	},
+	"output.build|/home/jordan/Arduino/GPS|1435772328.7190547":
+	{
+		"height": 104.0
+	},
+	"output.build|/home/jordan/Arduino/GSM|1435264913.1649888":
+	{
+		"height": 104.0
+	},
+	"output.build|/home/jordan/Arduino/GSM|1435264973.3620374":
+	{
+		"height": 104.0
+	},
+	"output.build|/home/jordan/Arduino/test_0|1435256270.9913862":
+	{
+		"height": 104.0
+	},
+	"output.build|/home/jordan/Arduino/test|1435254703.6896603":
+	{
+		"height": 104.0
+	},
+	"output.build|/tmp/Arduino/417788|1435771154.7225983":
+	{
+		"height": 196.0
+	},
+	"output.exec":
+	{
+		"height": 122.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.stino_log":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/.config/sublime-text-3/Packages/Stino/preset|1435254893.6982305":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/.config/sublime-text-3/Packages/Stino/preset|1435255276.123328":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/.config/sublime-text-3/Packages/Stino/preset|1435255295.3648922":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/.config/sublime-text-3/Packages/Stino/preset|1435255353.0017903":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/.config/sublime-text-3/Packages/Stino/preset|1435255470.9165916":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/.config/sublime-text-3/Packages/Stino/preset|1435255494.1145465":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435254235.6512625":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435254291.1704175":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435254340.0067391":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435254398.7107482":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435254475.0926633":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435258324.8577795":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435258503.867713":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435259666.9349623":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435336280.3542361":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435336337.0209317":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435338810.887911":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435338914.893229":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435338953.5397727":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435339032.6816275":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435339109.650291":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435341553.9486074":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435595405.1086826":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435595414.7382483":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435595436.7605994":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435595453.5511737":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435595464.6357896":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435595511.5912166":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435595531.9817717":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435595565.1368535":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435595965.2357366":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435595978.4090502":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435595995.8235822":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435596010.9898162":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435596959.812257":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435597296.431422":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435597346.3434024":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435597398.5706801":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435704819.7242255":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435707110.5705748":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435707194.9461153":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435707211.7077603":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435707573.7541893":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435770954.194862":
+	{
+		"height": 601.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435772332.0774684":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435772458.2902417":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435772471.1136453":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435772528.0737727":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435772713.1391995":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435772775.8983972":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435773750.3771517":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435773783.689135":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GPS|1435773838.2102122":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GSM|1435264994.2509525":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GSM|1435265464.6897435":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GSM|1435265511.431122":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GSM|1435265635.741258":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/GSM|1435265750.5799832":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435256278.649509":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435256496.8801253":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435256564.9876032":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435256615.5085473":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435256701.3783228":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435256911.4025578":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435256962.8851752":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435257666.1226416":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435258012.1580582":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435258278.5677845":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435258339.0968966":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435258406.9077752":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435258452.9932208":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435258485.0757692":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435258693.3004024":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435258823.213498":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435258836.9306126":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435258894.1703918":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435259244.1550286":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435259371.8041902":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test_0|1435259395.5185344":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test|1435254710.8105886":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test|1435254919.241538":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test|1435254952.8663683":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test|1435255043.4198544":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test|1435255612.69093":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test|1435255715.7899878":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test|1435255799.7419102":
+	{
+		"height": 104.0
+	},
+	"output.upload|/home/jordan/Arduino/test|1435255882.0951438":
+	{
+		"height": 104.0
+	},
+	"output.upload|/tmp/Arduino/1508508|1435595481.1527824":
+	{
+		"height": 104.0
+	},
+	"output.upload|/tmp/Arduino/417788|1435771130.422142":
+	{
+		"height": 379.0
+	},
+	"output.upload|/tmp/Arduino/6617038|1435707552.663686":
+	{
+		"height": 104.0
+	},
+	"output.upload|/usr/share/arduino/hardware/arduino/avr/cores/arduino|1435258865.1860342":
+	{
+		"height": 104.0
+	},
+	"output.upload|/usr/share/arduino/hardware/arduino/avr/cores/arduino|1435595497.3112006":
+	{
+		"height": 104.0
+	},
+	"output.upload|/usr/share/arduino/hardware/arduino/avr|1435256904.4444156":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "gis.sublime-project",
+	"replace":
+	{
+		"height": 68.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"main",
+				"main/java/com/cots/cotscontroller/MainActivity.java"
+			],
+			[
+				"utili",
+				"CotsBots/Utilities.h"
+			],
+			[
+				"xbee",
+				"CotsBots/XBeeReceive.h"
+			],
+			[
+				"recie",
+				"CotsBots/XbeeReceive.cpp"
+			],
+			[
+				"rang",
+				"public_html/range_test.html"
+			],
+			[
+				"bluet",
+				"main/java/com/cots/cotscontroller/BluetoothUtils.java"
+			],
+			[
+				"hearbeat",
+				"main/java/com/cots/cotscontroller/HeartBeatFragment.java"
+			],
+			[
+				"xbeere",
+				"CotsBots/XbeeReceive.cpp"
+			],
+			[
+				"xbeer",
+				"CotsBots/XbeeReceive.cpp"
+			],
+			[
+				"sys",
+				"CotsBots/SystemControl.h"
+			],
+			[
+				"system",
+				"CotsBots/SystemControl.h"
+			],
+			[
+				".ino",
+				"CotsBots/CotsBots.ino"
+			],
+			[
+				"utlit",
+				"CotsBots/Utilities.cpp"
+			],
+			[
+				"blue",
+				"main/java/com/cots/cotscontroller/BluetoothUtils.java"
+			],
+			[
+				"androi",
+				"main/AndroidManifest.xml"
+			],
+			[
+				"heartb",
+				"main/java/com/cots/cotscontroller/HeartBeatFragment.java"
+			],
+			[
+				"range",
+				"public_html/range_test.html"
+			],
+			[
+				"utli",
+				"CotsBots/Utilities.h"
+			],
+			[
+				"pack",
+				"CotsBots/Packet.h"
+			],
+			[
+				"heart",
+				"main/java/com/cots/cotscontroller/HeartBeatFragment.java"
+			],
+			[
+				"uti",
+				"CotsBots/Utilities.cpp"
+			],
+			[
+				"packet",
+				"CotsBots/Packet.cpp"
+			],
+			[
+				".cpp",
+				"CotsBots/SystemControl.cpp"
+			],
+			[
+				"utilit",
+				"CotsBots/Utilities.cpp"
+			],
+			[
+				"xbeefr",
+				"main/java/com/cots/cotscontroller/XbeeFragment.java"
+			],
+			[
+				"control",
+				"main/java/com/cots/cotscontroller/ControllerActivity.java"
+			],
+			[
+				"cots",
+				"CotsBots/CotsBots.ino"
+			],
+			[
+				"blueto",
+				"main/java/com/cots/cotscontroller/BluetoothUtils.java"
+			],
+			[
+				"bu",
+				"main/java/com/cots/cotscontroller/BluetoothUtils.java"
+			],
+			[
+				"u",
+				"CotsBots/Utilities.h"
+			],
+			[
+				"xbeef",
+				"main/java/com/cots/cotscontroller/XbeeFragment.java"
+			],
+			[
+				"packe",
+				"CotsBots/Packet.cpp"
+			],
+			[
+				"node.h",
+				"project2/node.h"
+			],
+			[
+				"indivd",
+				"project2/individual.h"
+			],
+			[
+				"node",
+				"project2/node.cpp"
+			],
+			[
+				"nod",
+				"project2/node.cpp"
+			],
+			[
+				"indi",
+				"project2/individual.cpp"
+			],
+			[
+				"gpp",
+				"project2/GPProjectData.csv"
+			],
+			[
+				"node.",
+				"alarm/evo/node.cpp"
+			],
+			[
+				"motor",
+				"alarm/evo/motor.h"
+			],
+			[
+				"indivi",
+				"alarm/evo/individual.h"
+			],
+			[
+				"individu",
+				"alarm/evo/individual.cpp"
+			],
+			[
+				"mot",
+				"motor.h"
+			],
+			[
+				"ser",
+				"servo.h"
+			],
+			[
+				"individ",
+				"project2/individual.cpp"
+			],
+			[
+				"in",
+				"individual.cpp"
+			],
+			[
+				"test",
+				"test.txt"
+			],
+			[
+				"header-ne",
+				"git-repo/wp-content/themes/linkglobal/header-new.php"
+			],
+			[
+				"search_re",
+				"git-repo/search/templates/dark/search_results.html"
+			],
+			[
+				".tex",
+				"~/Documents/school/cs383/LaTexDocumenation/homework3.tex"
+			],
+			[
+				"keyw",
+				"git-repo/wp-content/themes/linkglobal/include/keyWords.xml"
+			],
+			[
+				"search.ph",
+				"git-repo/wp-content/themes/linkglobal/search.php"
+			],
+			[
+				"header-n",
+				"git-repo/wp-content/themes/linkglobal/header-new.php"
+			],
+			[
+				"robo",
+				"git-repo/robots.txt"
+			],
+			[
+				"robot",
+				"git-repo/robots.txt"
+			],
+			[
+				"2015",
+				"git-repo/wp-content/themes/linkglobal/template-fall-2015.php"
+			],
+			[
+				"materi",
+				"git-repo/wp-content/themes/linkglobal/css/materialize.css"
+			],
+			[
+				"fundrai",
+				"git-repo/wp-content/themes/linkglobal/template-fundraise.php"
+			],
+			[
+				"footer-",
+				"git-repo/wp-content/themes/linkglobal/footer-new.php"
+			],
+			[
+				"template-hom",
+				"git-repo/wp-content/themes/linkglobal/template-homepage.php"
+			],
+			[
+				"aes.h",
+				"Arduino/libraries/AES/AES.h"
+			],
+			[
+				"aes.cpp",
+				"Arduino/libraries/AES/AES.cpp"
+			],
+			[
+				"aes.cp",
+				"Arduino/libraries/AES/AES.cpp"
+			],
+			[
+				"adafruit_",
+				"Arduino/libraries/Adafruit_GPS/Adafruit_GPS.cpp"
+			],
+			[
+				"header-new",
+				"git-repo/wp-content/themes/linkglobal/css/header-new.css"
+			],
+			[
+				"spiderfun",
+				"git-repo/wp-content/themes/linkglobal/admin/spiderfuncs.php"
+			],
+			[
+				"search.php",
+				"git-repo/wp-content/themes/twentyfifteen/search.php"
+			],
+			[
+				"template-ho",
+				"git-repo/wp-content/themes/linkglobal/template-homepage.php"
+			],
+			[
+				"homepage",
+				"git-repo/wp-content/themes/linkglobal/template-homepage.php"
+			],
+			[
+				"page.php",
+				"git-repo/wp-content/themes/linkglobal/page.php"
+			],
+			[
+				"template-home",
+				"git-repo/wp-content/themes/linkglobal/template-homepage.php"
+			],
+			[
+				"function",
+				"git-repo/wp-content/themes/linkglobal/functions.php"
+			],
+			[
+				"donate",
+				"git-repo/wp-content/themes/linkglobal/template-donate.php"
+			],
+			[
+				"gala",
+				"wp-content/themes/linkglobal/css/gala.css"
+			],
+			[
+				"class",
+				"classyCRON.php"
+			],
+			[
+				"fundraise",
+				"wp-content/themes/linkglobal/template-fundraise.php"
+			],
+			[
+				"header-",
+				"wp-content/themes/linkglobal/header-new.php"
+			],
+			[
+				"classy",
+				"wp-content/themes/linkglobal/classyCRON.php"
+			],
+			[
+				"scripts",
+				"wp-content/themes/linkglobal/js/scripts.js"
+			],
+			[
+				"menu",
+				"wp-content/plugins/gravityforms/js/menu.js"
+			],
+			[
+				".ht",
+				"pagoda/.htaccess"
+			],
+			[
+				"homep",
+				"wp-content/themes/linkglobal/template-homepage.php"
+			],
+			[
+				"scripts.js",
+				"wp-content/themes/linkglobal/js/scripts.js"
+			],
+			[
+				"formatting",
+				"wp-includes/formatting.php"
+			],
+			[
+				"wp-emjoi-l",
+				"wp-includes/js/wp-emoji-loader.js"
+			],
+			[
+				"template-fun",
+				"wp-content/themes/linkglobal/template-fundraise.php"
+			],
+			[
+				"template-dont",
+				"wp-content/themes/linkglobal/template-donate-page.php"
+			],
+			[
+				"template-don",
+				"wp-content/themes/linkglobal/template-donate.php"
+			],
+			[
+				"functions",
+				"wp-content/themes/linkglobal/functions.php"
+			],
+			[
+				"header",
+				"wp-content/themes/linkglobal/header-new.php"
+			],
+			[
+				"formatting.php",
+				"wp-includes/formatting.php"
+			],
+			[
+				"scripts.php",
+				"wp-content/themes/linkglobal/functions/scripts.php"
+			],
+			[
+				"func",
+				"wp-includes/functions.php"
+			],
+			[
+				"gravityforms",
+				"wp-content/plugins/gravity-forms-placeholders/gravityforms-placeholders.php"
+			],
+			[
+				"gravity",
+				"wp-content/plugins/gravity-forms-placeholders/gravityforms-placeholders.php"
+			],
+			[
+				"footer",
+				"wp-content/themes/linkglobal/footer.php"
+			],
+			[
+				"footer-new",
+				"wp-content/themes/linkglobal/footer-new.php"
+			],
+			[
+				"footer-n",
+				"wp-content/themes/linkglobal/footer-new.php"
+			],
+			[
+				"nav-menus.css",
+				"wp-admin/css/nav-menus.css"
+			],
+			[
+				"upgrade",
+				"wp-admin/upgrade.php"
+			],
+			[
+				"template.php",
+				"wp-admin/includes/template.php"
+			],
+			[
+				"functions.php",
+				"wp-content/themes/linkglobal/functions.php"
+			],
+			[
+				"popu",
+				"wp-content/themes/linkglobal/js/popup.js"
+			],
+			[
+				"settings.css",
+				"wp-content/plugins/essential-grid/public/assets/css/settings.css"
+			],
+			[
+				"homepa",
+				"wp-content/themes/linkglobal/template-homepage.php"
+			],
+			[
+				"pop",
+				"wp-content/themes/linkglobal/js/popup.js"
+			],
+			[
+				"footer-ne",
+				"wp-content/themes/linkglobal/footer-new.php"
+			],
+			[
+				"home",
+				"wp-content/themes/linkglobal/css/home_page_responsive.css"
+			],
+			[
+				"menu.js",
+				"wp-content/plugins/gravityforms/js/menu.js"
+			],
+			[
+				"home_pa",
+				"wp-content/themes/linkglobal/css/home_page_responsive.css"
+			],
+			[
+				"template-ima",
+				"wp-content/themes/linkglobal/template-impact-interior.php"
+			],
+			[
+				"nav-menu-te",
+				"wp-includes/nav-menu-template.php"
+			],
+			[
+				"nav-menu",
+				"wp-admin/js/nav-menu.js"
+			],
+			[
+				"nav",
+				"wp-includes/nav-menu.php"
+			],
+			[
+				"nav-m",
+				"wp-admin/nav-menus.php"
+			],
+			[
+				"footer.php",
+				"wp-content/themes/linkglobal/footer.php"
+			],
+			[
+				"gf.pl",
+				"wp-content/plugins/gravity-forms-placeholders/gf.placeholders.js"
+			],
+			[
+				"jquery.main",
+				"wp-content/themes/linkglobal/js/jquery.main.js"
+			],
+			[
+				"placeholders.js",
+				"wp-content/plugins/gravity-forms-placeholders/gf.placeholders.js"
+			],
+			[
+				"popup",
+				"wp-content/themes/linkglobal/js/popup.js"
+			],
+			[
+				"lightb",
+				"wp-content/plugins/essential-grid/public/assets/js/lightbox.js"
+			],
+			[
+				"lightbox",
+				"wp-content/plugins/essential-grid/public/assets/js/lightbox.js"
+			],
+			[
+				"jquery.js",
+				"wp-includes/js/jquery/jquery.js"
+			],
+			[
+				"script",
+				"wp-content/themes/linkglobal/functions/scripts.php"
+			],
+			[
+				"functio",
+				"wp-includes/functions.php"
+			],
+			[
+				"wp-db",
+				"wp-includes/wp-db.php"
+			],
+			[
+				".hta",
+				".htaccess"
+			],
+			[
+				"template-do",
+				"wp-content/themes/linkglobal/template-donate.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 710.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 306.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

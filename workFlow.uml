@@ -1,0 +1,57 @@
+@startuml
+(*)--> Initialize
+note right: Set map extent & type, intialize renderers, ect.
+Initialize --> Idaho county clicked
+partition onClickListener() {
+	-> Get Selected Agencies
+	--> Clear any leftover graphics
+	note right: Only used when prior graphics on map.
+	--> New highlight graphic w/ county's geometry
+	--> Add Graphic
+}
+partition GetLayers() {
+	-left-> Initialize queries and queryTasks
+	--> setup SQL query from selected agency name
+	-> For loop constructing string for query
+	-> For loop constructing string for query
+	--> ===B1===
+	--> execute featureLayer & raster query
+	--> ===B2===
+	partition RasterOnComplete() {
+		-->[For raster layer] Setup raster function for clipping
+		--> Setup filter function for colormaping
+		note left: Colormaping function calls clipping function
+		--> Add new raster to map
+		--> Idaho county clicked
+	}
+	partition FeatureLayerOnComplete() {
+		===B2===-->[For SMA Layer] Get extent of county
+		--> Check for SMA within and overlapping county
+		--> For each SMA within county add it to the map
+		--> Create graphic that is unioned various SMA results
+		--> Get area of unioned & intersected graphic
+		--> Calculate area of graphic w.r.t. county
+		--> Add resulting numbers to window
+		--> Idaho county clicked
+	}
+	===B1=== --> Execute Vector layer query
+	note right: Is execute only to recieve object IDs
+}
+partition VectorResults() {
+	-->Initialize new queries/queryTasks
+	partition RunQuery() {
+		--> For each object ID % 1000
+		-> Execute query w/ 1000 object IDs
+	
+		partition VectorOnComplete() {
+			-> Get area of vector layer(s)
+			--> Add area to running total
+			note right: Currently values are displayed in logger
+			--> Null out results
+			note right: Done for garbage collector
+			--> Recurse for next 1000 object IDs
+			-left-> For each object ID % 1000
+		}
+	}
+}
+@enduml
